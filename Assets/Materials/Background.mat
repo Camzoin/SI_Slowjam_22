@@ -21,8 +21,24 @@ Material:
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
+    - _HighResTextTexture:
+        m_Texture: {fileID: 8600000, guid: 1e0205fa66ae0fc4c85b8b1e7a001bf6, type: 2}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _LowResTextTexture:
+        m_Texture: {fileID: 8600000, guid: b303453950341f94d931f5f4c18314cd, type: 2}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _TextTexture:
+        m_Texture: {fileID: 8600000, guid: 1e0205fa66ae0fc4c85b8b1e7a001bf6, type: 2}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _Text_Texture:
         m_Texture: {fileID: 8600000, guid: 1e0205fa66ae0fc4c85b8b1e7a001bf6, type: 2}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _UltraLowResTextTexture:
+        m_Texture: {fileID: 8600000, guid: bfc9096b0fba5ed4684758fa1871b910, type: 2}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - unity_Lightmaps:
@@ -39,16 +55,31 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
+    - _BG_Scale: 0.01
+    - _BG_Seed: 560
     - _Display_Text: 0
-    - _Float: 1
+    - _Float: 0
+    - _Float_1: 0
+    - _LegibleBoxSize: 0
+    - _LegibleBoxSize_1: 1
     - _QueueControl: 0
     - _QueueOffset: 0
+    - _Reverse_Side_Blur: 0
+    - _TextLegibility: 0
     - _Text_Scale: 0.29
+    - _UseScreenSpace: 0
+    - _Vert_OFsset: 0
     m_Colors:
     - _Color: {r: 1, g: 0.8482883, b: 0.37169808, a: 0}
-    - _Text_Color: {r: 1, g: 0, b: 0, a: 1}
+    - _Color_1: {r: 0.7830189, g: 0.7830189, b: 0.7830189, a: 1}
+    - _Color_2: {r: 0.5377358, g: 0.5377358, b: 0.5377358, a: 1}
+    - _LegibleBoxAdd: {r: 0, g: 0, b: 0, a: 0}
+    - _LegibleBoxMulti: {r: 0, g: 0, b: 0, a: 0}
+    - _LegibleBoxPos: {r: 0, g: 0, b: 0, a: 0}
+    - _Text_Color: {r: 1, g: 0.65471697, b: 0.65471697, a: 1}
     - _Text_Proj_Offset: {r: 0, g: 0, b: 0, a: 0}
-    - _Text_Rotation: {r: 0, g: 0, b: -375.9, a: 0}
+    - _Text_Rotation: {r: 0, g: 0, b: 0, a: 0}
+    - _Z_Dist_Add_Multi: {r: 0, g: 0, b: 0, a: 0}
   m_BuildTextureStacks: []
 --- !u!114 &7735380369032719234
 MonoBehaviour:
