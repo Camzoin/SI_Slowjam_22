@@ -4,15 +4,6 @@
     "m_ObjectId": "0dffc7c8e4724f45a5920445e9001660",
     "m_Properties": [
         {
-            "m_Id": "35f19898738d4aee84d66f046c32a86d"
-        },
-        {
-            "m_Id": "ff46b8fb66b64ba69ff152c9033c6fe4"
-        },
-        {
-            "m_Id": "0d070c1cdbd5492b92ba10ea30c8adf1"
-        },
-        {
             "m_Id": "4d60c1c96f9345f49226317718480392"
         },
         {
@@ -1016,35 +1007,6 @@
 }
 
 {
-    "m_SGVersion": 0,
-    "m_Type": "UnityEditor.ShaderGraph.Internal.Texture2DShaderProperty",
-    "m_ObjectId": "0d070c1cdbd5492b92ba10ea30c8adf1",
-    "m_Guid": {
-        "m_GuidSerialized": "d79b098c-091d-414f-9b89-4ad6b2d58cc3"
-    },
-    "m_Name": "HighResTextTexture",
-    "m_DefaultRefNameVersion": 1,
-    "m_RefNameGeneratedByDisplayName": "HighResTextTexture",
-    "m_DefaultReferenceName": "_HighResTextTexture",
-    "m_OverrideReferenceName": "_HighResTextTexture",
-    "m_GeneratePropertyBlock": true,
-    "m_UseCustomSlotLabel": false,
-    "m_CustomSlotLabel": "",
-    "m_Precision": 0,
-    "overrideHLSLDeclaration": false,
-    "hlslDeclarationOverride": 0,
-    "m_Hidden": false,
-    "m_Value": {
-        "m_SerializedTexture": "{\"texture\":{\"fileID\":8600000,\"guid\":\"1e0205fa66ae0fc4c85b8b1e7a001bf6\",\"type\":2}}",
-        "m_Guid": ""
-    },
-    "isMainTexture": false,
-    "useTilingAndOffset": false,
-    "m_Modifiable": true,
-    "m_DefaultType": 0
-}
-
-{
     "m_SGVersion": 3,
     "m_Type": "UnityEditor.ShaderGraph.Internal.ColorShaderProperty",
     "m_ObjectId": "0ff419854e5d4cc1870a5dddded8fc2d",
@@ -1435,35 +1397,6 @@
     },
     "m_Labels": [],
     "m_Channel": 0
-}
-
-{
-    "m_SGVersion": 0,
-    "m_Type": "UnityEditor.ShaderGraph.Internal.Texture2DShaderProperty",
-    "m_ObjectId": "35f19898738d4aee84d66f046c32a86d",
-    "m_Guid": {
-        "m_GuidSerialized": "6e9e7180-5d8f-498b-aad9-45a3c966d895"
-    },
-    "m_Name": "LowResTextTexture",
-    "m_DefaultRefNameVersion": 1,
-    "m_RefNameGeneratedByDisplayName": "LowResTextTexture",
-    "m_DefaultReferenceName": "_LowResTextTexture",
-    "m_OverrideReferenceName": "_LowResTextTexture",
-    "m_GeneratePropertyBlock": true,
-    "m_UseCustomSlotLabel": false,
-    "m_CustomSlotLabel": "",
-    "m_Precision": 0,
-    "overrideHLSLDeclaration": false,
-    "hlslDeclarationOverride": 0,
-    "m_Hidden": false,
-    "m_Value": {
-        "m_SerializedTexture": "{\"texture\":{\"fileID\":8600000,\"guid\":\"b303453950341f94d931f5f4c18314cd\",\"type\":2}}",
-        "m_Guid": ""
-    },
-    "isMainTexture": false,
-    "useTilingAndOffset": false,
-    "m_Modifiable": true,
-    "m_DefaultType": 0
 }
 
 {
@@ -2168,15 +2101,6 @@
     "m_ObjectId": "6dcbf5a4072e43098b92a19edd1f16d7",
     "m_Name": "",
     "m_ChildObjectList": [
-        {
-            "m_Id": "0d070c1cdbd5492b92ba10ea30c8adf1"
-        },
-        {
-            "m_Id": "35f19898738d4aee84d66f046c32a86d"
-        },
-        {
-            "m_Id": "ff46b8fb66b64ba69ff152c9033c6fe4"
-        },
         {
             "m_Id": "0ff419854e5d4cc1870a5dddded8fc2d"
         },
@@ -4087,34 +4011,5 @@
         "x": 0.0,
         "y": 0.0
     }
-}
-
-{
-    "m_SGVersion": 0,
-    "m_Type": "UnityEditor.ShaderGraph.Internal.Texture2DShaderProperty",
-    "m_ObjectId": "ff46b8fb66b64ba69ff152c9033c6fe4",
-    "m_Guid": {
-        "m_GuidSerialized": "5abfd9d7-d4b7-4c33-b2c7-07ce6684e37c"
-    },
-    "m_Name": "UltraLowResTextTexture",
-    "m_DefaultRefNameVersion": 1,
-    "m_RefNameGeneratedByDisplayName": "UltraLowResTextTexture",
-    "m_DefaultReferenceName": "_UltraLowResTextTexture",
-    "m_OverrideReferenceName": "",
-    "m_GeneratePropertyBlock": true,
-    "m_UseCustomSlotLabel": false,
-    "m_CustomSlotLabel": "",
-    "m_Precision": 0,
-    "overrideHLSLDeclaration": false,
-    "hlslDeclarationOverride": 0,
-    "m_Hidden": false,
-    "m_Value": {
-        "m_SerializedTexture": "{\"texture\":{\"fileID\":8600000,\"guid\":\"bfc9096b0fba5ed4684758fa1871b910\",\"type\":2}}",
-        "m_Guid": ""
-    },
-    "isMainTexture": false,
-    "useTilingAndOffset": false,
-    "m_Modifiable": true,
-    "m_DefaultType": 0
 }
 

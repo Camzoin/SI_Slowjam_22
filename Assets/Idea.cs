@@ -14,7 +14,7 @@ public class Idea : MonoBehaviour
     public Material textMat;
     public Camera highResCam, medResCam, lowResCam;
 
-    [HideInInspector]
+    //[HideInInspector]
     public Material curTextMat;
 
     private RenderTexture highResTexture, medResTexture, lowResTexture;
@@ -22,36 +22,36 @@ public class Idea : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        //curTextMat = textMat;
+        curTextMat = new Material(textMat);
 
-        //dp.material = curTextMat;
+        dp.material = curTextMat;
 
-        //backboard.localScale = new Vector3(size / 5, size / 5, size / 5);
+        backboard.localScale = new Vector3(size / 5, size / 5, size / 5);
 
-        //dp.size = new Vector3(size, size, 30);
-
-
-        //highResTexture = new RenderTexture(512, 512, 16, RenderTextureFormat.R8);
-        //highResTexture.Create();
-
-        //highResCam.targetTexture = highResTexture;
-
-        //medResTexture = new RenderTexture(128, 128, 16, RenderTextureFormat.R8);
-        //medResTexture.Create();
-
-        //medResCam.targetTexture = medResTexture;
-
-        //lowResTexture = new RenderTexture(16, 16, 16, RenderTextureFormat.R8);
-        //lowResTexture.Create();
-
-        //lowResCam.targetTexture = lowResTexture;
+        dp.size = new Vector3(size, size, 30);
 
 
-        //curTextMat.SetTexture("_HighResTextTexture", highResTexture);
-        //curTextMat.SetTexture("_LowResTextTexture", medResTexture);
-        //curTextMat.SetTexture("_UltraLowResTextTexture", lowResTexture);
+        highResTexture = new RenderTexture(512, 512, 16, RenderTextureFormat.Default, 8);
+        highResTexture.Create();
 
-        //textField.text = displayString;
+        highResCam.targetTexture = highResTexture;
+
+        medResTexture = new RenderTexture(128, 128, 16, RenderTextureFormat.Default);
+        medResTexture.Create();
+
+        medResCam.targetTexture = medResTexture;
+
+        lowResTexture = new RenderTexture(16, 16, 16, RenderTextureFormat.Default);
+        lowResTexture.Create();
+
+        lowResCam.targetTexture = lowResTexture;
+
+
+        curTextMat.SetTexture("_HighResTexture", highResTexture);
+        curTextMat.SetTexture("_MediumResTexture", medResTexture);
+        curTextMat.SetTexture("_LowResTexture", lowResTexture);
+
+        textField.text = displayString;
     }
 
     // Update is called once per frame
