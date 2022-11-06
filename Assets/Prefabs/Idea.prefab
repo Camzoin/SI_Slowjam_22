@@ -55,7 +55,7 @@ MonoBehaviour:
   highResCam: {fileID: 2460522173022882411}
   medResCam: {fileID: 2460522172616639492}
   lowResCam: {fileID: 2460522173568204905}
-  curTextMat: {fileID: 0}
+  curTextMat: {fileID: 2100000, guid: 8710292f60263914d970b104434090e1, type: 2}
 --- !u!1001 &2659039757791386509
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -125,8 +125,17 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 487313943193006127, guid: bcae8ccfebf64ea4d84545ae983bddb0,
         type: 3}
+      propertyPath: m_text
+      value: 'i love
+
+        game art
+
+        XDD'
+      objectReference: {fileID: 0}
+    - target: {fileID: 487313943193006127, guid: bcae8ccfebf64ea4d84545ae983bddb0,
+        type: 3}
       propertyPath: m_fontSize
-      value: 220.95
+      value: 296.3
       objectReference: {fileID: 0}
     - target: {fileID: 487313943193006127, guid: bcae8ccfebf64ea4d84545ae983bddb0,
         type: 3}

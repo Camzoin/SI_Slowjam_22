@@ -12,6 +12,8 @@ public class InputManager : MonoBehaviour
 
     public Vector2 camZoomMinMax = new Vector2(4, 10);
 
+    public bool playerCanAct = true;
+
     private Vector3 oldMousePos;
 
     private float zoomLerp;
@@ -25,57 +27,60 @@ public class InputManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetButtonDown("Fire1"))
+        if(playerCanAct == true)
         {
-            oldMousePos = Input.mousePosition;
-        }
-
-        if (Input.GetButton("Fire1"))
-        {
-            Vector2 mouseMovemnet = Input.mousePosition - oldMousePos;
-
-            mouseMovemnet = mouseMovemnet * mouseSensitivity;
-
-            //add torque based on mouse movement last frame
-            rb.AddRelativeTorque(new Vector3(-mouseMovemnet.y, mouseMovemnet.x, 0));
-
-            oldMousePos = Input.mousePosition;
-        }
-
-        if (Input.GetButton("Fire2"))
-        {
-            if(zoomLerp < 1)
+            if (Input.GetButtonDown("Fire1"))
             {
-                zoomLerp += Time.deltaTime * 5;
+                oldMousePos = Input.mousePosition;
             }
-            else if(zoomLerp > 1)
+
+            if (Input.GetButton("Fire1"))
             {
-                zoomLerp = 1;
-            }
-            
-        }
-        else if(zoomLerp > 0)
-        {
-            zoomLerp -= Time.deltaTime * 5;
+                Vector2 mouseMovemnet = Input.mousePosition - oldMousePos;
 
-            if (zoomLerp < 0)
+                mouseMovemnet = mouseMovemnet * mouseSensitivity;
+
+                //add torque based on mouse movement last frame
+                rb.AddRelativeTorque(new Vector3(-mouseMovemnet.y, mouseMovemnet.x, 0));
+
+                oldMousePos = Input.mousePosition;
+            }
+
+            if (Input.GetButton("Fire2"))
             {
-                zoomLerp = 0;
+                if (zoomLerp < 1)
+                {
+                    zoomLerp += Time.deltaTime * 5;
+                }
+                else if (zoomLerp > 1)
+                {
+                    zoomLerp = 1;
+                }
+
             }
-        }
+            else if (zoomLerp > 0)
+            {
+                zoomLerp -= Time.deltaTime * 5;
+
+                if (zoomLerp < 0)
+                {
+                    zoomLerp = 0;
+                }
+            }
 
 
-        if(Input.GetButton("RotateLeft"))
-        {
-            rb.AddRelativeTorque(new Vector3(0, 0, 100 * Time.deltaTime));
-        }
+            if (Input.GetButton("RotateLeft"))
+            {
+                rb.AddRelativeTorque(new Vector3(0, 0, 100 * Time.deltaTime));
+            }
 
-        if (Input.GetButton("RotateRight"))
-        {
-            rb.AddRelativeTorque(new Vector3(0, 0, -100 * Time.deltaTime));
-        }
+            if (Input.GetButton("RotateRight"))
+            {
+                rb.AddRelativeTorque(new Vector3(0, 0, -100 * Time.deltaTime));
+            }
 
 
-        mainCam.orthographicSize = Mathf.Lerp(camZoomMinMax.y, camZoomMinMax.x, zoomLerp);
+            mainCam.orthographicSize = Mathf.Lerp(camZoomMinMax.y, camZoomMinMax.x, zoomLerp);
+        } 
     }
 }

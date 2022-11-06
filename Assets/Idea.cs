@@ -14,6 +14,8 @@ public class Idea : MonoBehaviour
     public Material textMat;
     public Camera highResCam, medResCam, lowResCam;
 
+    public bool hasBeenCollected = false;
+
     //[HideInInspector]
     public Material curTextMat;
 
@@ -22,7 +24,7 @@ public class Idea : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        curTextMat = new Material(textMat);
+        curTextMat = new Material(curTextMat);
 
         dp.material = curTextMat;
 

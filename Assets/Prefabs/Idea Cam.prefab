@@ -180,8 +180,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: what is up?
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 82d247e6c0bb78641954f1dbad641ea3, type: 2}
-  m_sharedMaterial: {fileID: 2858349799042614083, guid: 82d247e6c0bb78641954f1dbad641ea3,
+  m_fontAsset: {fileID: 11400000, guid: f9044136544dd9347a9f9d86bc51b665, type: 2}
+  m_sharedMaterial: {fileID: -1202241613332848820, guid: f9044136544dd9347a9f9d86bc51b665,
     type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -206,7 +206,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 155.35
+  m_fontSize: 216.5
   m_fontSizeBase: 416.3
   m_fontWeight: 400
   m_enableAutoSizing: 1
