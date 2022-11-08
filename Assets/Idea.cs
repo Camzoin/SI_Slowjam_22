@@ -28,7 +28,7 @@ public class Idea : MonoBehaviour
 
         dp.material = curTextMat;
 
-        backboard.localScale = new Vector3(size / 5, size / 5, size / 5);
+        //backboard.localScale = new Vector3(size / 5, size / 5, size / 5);
 
         dp.size = new Vector3(size, size, 30);
 

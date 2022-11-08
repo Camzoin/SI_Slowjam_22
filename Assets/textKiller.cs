@@ -19,7 +19,16 @@ public class textKiller : StateMachineBehaviour
     // OnStateExit is called when a transition ends and the state machine finishes evaluating this state
     override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        GameObject.FindObjectOfType<GameManager>().curIdeaToDestroy.dp.gameObject.SetActive(false);
+        GameManager gm = GameObject.FindObjectOfType<GameManager>();
+
+        gm.curIdeaToDestroy.dp.gameObject.SetActive(false);
+
+        gm.curIdeaToDestroy = null;
+
+        if (gm.curLevel.curFoundIdeas >= gm.curLevel.ideaCount)
+        {
+            gm.GoToNextLevel();
+        }
     }
 
     // OnStateMove is called right after Animator.OnAnimatorMove()

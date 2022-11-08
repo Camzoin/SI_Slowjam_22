@@ -55,6 +55,7 @@ MonoBehaviour:
   highResCam: {fileID: 2460522173022882411}
   medResCam: {fileID: 2460522172616639492}
   lowResCam: {fileID: 2460522173568204905}
+  hasBeenCollected: 0
   curTextMat: {fileID: 2100000, guid: 8710292f60263914d970b104434090e1, type: 2}
 --- !u!1001 &2659039757791386509
 PrefabInstance:
@@ -194,6 +195,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 5439149459287318769}
     m_Modifications:
+    - target: {fileID: 7290882210954189638, guid: 2f65c395029f2a54baacc561094ef604,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7290882211020877441, guid: 2f65c395029f2a54baacc561094ef604,
         type: 3}
       propertyPath: m_RootOrder
@@ -263,7 +269,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 5119446383276613060}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0777d029ed3dffa4692f417d4aba19ca, type: 3}
   m_Name: 

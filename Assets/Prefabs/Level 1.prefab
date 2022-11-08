@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2948382907262297708}
   - component: {fileID: 2948382907262297707}
+  - component: {fileID: 4563917820344761651}
   m_Layer: 0
   m_Name: Level 1
   m_TagString: Untagged
@@ -45,7 +46,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c2ea55683ecf15246ad5cddabbff7543, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ideaCount: 5
+  ideaCount: 8
   ideaPrefab: {fileID: 1832774428363432893, guid: a98d29755893f714998215fc357eff9a,
     type: 3}
   curIdeas: []
@@ -63,6 +64,89 @@ MonoBehaviour:
   - {fileID: 11400000, guid: e1b08e455061ad84cb1a77c57130e8f2, type: 2}
   - {fileID: 11400000, guid: d2266e7d58b64b54daa35c6c1e2e39c8, type: 2}
   - {fileID: 11400000, guid: 73a3a7ea2e574164a94a29aed477fee4, type: 2}
+  adj: Beautiful  Creative Bountiful Arduous Courteous Breathtaking Auspicious Ambitious
+    Awestruck Ancient Bashfull Biased Comforting Definitive Duanting Fabulous Glamorous
+    Gratuitous Humane Humerous Impertinent Innocent Ignorant Impecable Magnificent
+    Majestic Crescent Heavenly Darkened Romantic Successful Sincere Theraputic Tender
+    Zealous Youthful Balanced Communicative Abhorrent Daunting Abject Repressive
+    Resolute Reviled Adored Hazy Hostile Hypnotic Selfish Benevolent Inartistic Sheepish
+    Caustic Invalid Spurious Coarse Just Strenuous Fruitful Radiant Whispering
+  noun: Menagerie Bounty Bezier Benefactor Moon Contour Presence Blight Rampart Ruins
+    Empire Accoutrement Defilement Maleficium Battlements Darkness Phantom Atmosphere
+    Appearance Awareness Beginning Balance Consequence Collection Death Data Departure
+    Depression Emotion Enthusiasm Excitement Expression Failure Facsimile Petricore
+    Fortune Funeral Darling Guidance Grocery Highway Hearing Imagination Independence
+    Knowledge Light Language Machine Medium Method Negotiation Obligation Organization
+    Painting Performance Perception Philosophy Possession Pizza Quality Recognition
+    Responsibility Relations Satisfaction Sign Society Structure Tension Understanding
+    Union Weakness Warning Year
+  backgroundMat: {fileID: 2100000, guid: 9989b1b64ee2b70439941813a6eb7951, type: 2}
+  objectMat: {fileID: 2100000, guid: 710195f7627cb0240be9352b9cc529cd, type: 2}
+  curBackgroundMat: {fileID: 0}
+  curObjectMat: {fileID: 0}
+  backgroundMeshRenderer: {fileID: 2948382908353878044}
+  psRenderers:
+  - {fileID: 2948382908343531003}
+  - {fileID: 2948382909246438106}
+  - {fileID: 5514329848092542812}
+  gm: {fileID: 0}
+  crackValues:
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  curFoundIdeas: 0
+  isSpawning: 1
+  particleSystems:
+  - {fileID: 2948382908343531004}
+  - {fileID: 2948382909246438107}
+  - {fileID: 5514329848092542813}
+  shapeScale:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 3333.3333
+      outSlope: 3333.3333
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 3
+      value: 10000
+      inSlope: 3333.3333
+      outSlope: 3333.3333
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+--- !u!95 &4563917820344761651
+Animator:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2948382907262297706}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 2435c5126807d9e4bbdc3378bbfbc76b, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1001 &5514329847760739848
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -132,9 +216,51 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2bff5e6779bc2c34d9c45186982363a3, type: 3}
+--- !u!199 &2948382908343531003 stripped
+ParticleSystemRenderer:
+  m_CorrespondingSourceObject: {fileID: 7236184426248072179, guid: 2bff5e6779bc2c34d9c45186982363a3,
+    type: 3}
+  m_PrefabInstance: {fileID: 5514329847760739848}
+  m_PrefabAsset: {fileID: 0}
+--- !u!198 &2948382908343531004 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 7236184426248072180, guid: 2bff5e6779bc2c34d9c45186982363a3,
+    type: 3}
+  m_PrefabInstance: {fileID: 5514329847760739848}
+  m_PrefabAsset: {fileID: 0}
+--- !u!23 &2948382908353878044 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 7236184426191308308, guid: 2bff5e6779bc2c34d9c45186982363a3,
+    type: 3}
+  m_PrefabInstance: {fileID: 5514329847760739848}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &2948382908371221454 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7236184426207536582, guid: 2bff5e6779bc2c34d9c45186982363a3,
+    type: 3}
+  m_PrefabInstance: {fileID: 5514329847760739848}
+  m_PrefabAsset: {fileID: 0}
+--- !u!199 &2948382909246438106 stripped
+ParticleSystemRenderer:
+  m_CorrespondingSourceObject: {fileID: 7236184426947519698, guid: 2bff5e6779bc2c34d9c45186982363a3,
+    type: 3}
+  m_PrefabInstance: {fileID: 5514329847760739848}
+  m_PrefabAsset: {fileID: 0}
+--- !u!198 &2948382909246438107 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 7236184426947519699, guid: 2bff5e6779bc2c34d9c45186982363a3,
+    type: 3}
+  m_PrefabInstance: {fileID: 5514329847760739848}
+  m_PrefabAsset: {fileID: 0}
+--- !u!199 &5514329848092542812 stripped
+ParticleSystemRenderer:
+  m_CorrespondingSourceObject: {fileID: 536811860, guid: 2bff5e6779bc2c34d9c45186982363a3,
+    type: 3}
+  m_PrefabInstance: {fileID: 5514329847760739848}
+  m_PrefabAsset: {fileID: 0}
+--- !u!198 &5514329848092542813 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 536811861, guid: 2bff5e6779bc2c34d9c45186982363a3,
     type: 3}
   m_PrefabInstance: {fileID: 5514329847760739848}
   m_PrefabAsset: {fileID: 0}

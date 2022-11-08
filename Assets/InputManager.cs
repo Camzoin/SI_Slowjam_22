@@ -18,6 +18,8 @@ public class InputManager : MonoBehaviour
 
     private float zoomLerp;
 
+    public GameManager gm;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -32,6 +34,11 @@ public class InputManager : MonoBehaviour
             if (Input.GetButtonDown("Fire1"))
             {
                 oldMousePos = Input.mousePosition;
+
+                if(gm.curLevel == null)
+                {
+                    gm.GoToNextLevel();
+                }
             }
 
             if (Input.GetButton("Fire1"))

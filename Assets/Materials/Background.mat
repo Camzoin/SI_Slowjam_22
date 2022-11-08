@@ -57,6 +57,7 @@ Material:
     m_Floats:
     - _BG_Scale: 0.01
     - _BG_Seed: 560
+    - _Crack: 0
     - _Display_Text: 0
     - _Float: 0
     - _Float_1: 0

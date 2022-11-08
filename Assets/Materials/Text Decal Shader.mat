@@ -68,6 +68,7 @@ Material:
     - _DecalMeshDepthBias: 0
     - _DecalMeshViewBias: 0
     - _DrawOrder: 0
+    - _FreakOut: 0
     - _HueOffset: 0
     - _Hue_Offset: 0.846
     - _TextLegibility: 1
