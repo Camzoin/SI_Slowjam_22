@@ -160,11 +160,6 @@ public class Level1 : MonoBehaviour
         StartCoroutine(SpawnTextAnim());
     }
 
-    public void AnimateOrbs()
-    {
-        StartCoroutine(SpawnOrbsAnim());
-    }
-
     public void DoneSpawning()
     {
         isSpawning = false;
@@ -220,43 +215,4 @@ public class Level1 : MonoBehaviour
         yield return null;
     }
 
-    IEnumerator SpawnOrbsAnim()
-    {
-        float elapsedTime = 0f;
-        float waitTime = 3f;
-
-        Debug.Log("fasda");
-
-
-        while (elapsedTime < waitTime)
-        {
-            // Make sure we got there THIS WILL BE TEXT LEGIBILITY + VISIBLITY
-
-            foreach (ParticleSystem p in particleSystems)
-            {
-                //make particles larger and control how far in and out they go OMG USE ANIM CURVES SO SMART
-                ParticleSystem.ShapeModule pShape = p.shape;
-                Debug.Log("a");
-                int particleCount = p.main.maxParticles;
-
-                var particles = new ParticleSystem.Particle[particleCount];
-                var currentAmount = p.GetParticles(particles);
-
-                for (int i = 0; i < currentAmount; i++)
-                {
-                    Debug.Log("f " + particles[i].position);
-                    particles[i].position = particles[i].position * shapeScale.Evaluate(elapsedTime);
-
-                    Debug.Log("h " + particles[i].position);
-                }
-            }
-            elapsedTime += Time.deltaTime;
-
-            // Yield here
-            yield return null;
-        }
-        // Make sure we got there THIS WILL BE TEXT LEGIBILITY + VISIBLITY
-
-        yield return null;
-    }
 }
