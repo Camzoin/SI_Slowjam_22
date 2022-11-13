@@ -43,7 +43,6 @@ public class InputManager : MonoBehaviour
 
             Vector2 mousePos = new Vector2(Input.mousePosition.x, Input.mousePosition.y);
             Vector2 mouseDelta = oldMousePos - mousePos;
-            oldMousePos = mousePos;
 
             // === INPUT FORCES ===
             // Self explanatory for the most part, we apply the mouse delta as a force to both the velocities and the input activity "velocity"
@@ -117,6 +116,8 @@ public class InputManager : MonoBehaviour
         {
             CloseIdeasMenu();
         }
+
+        oldMousePos = Input.mousePosition;
     }
 
     public void OpenIdeasMenu()

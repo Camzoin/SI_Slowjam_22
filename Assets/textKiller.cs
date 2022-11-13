@@ -27,6 +27,8 @@ public class textKiller : StateMachineBehaviour
 
         gm.curIdeaToDestroy = null;
 
+        gm.inputManager.playerCanAct = true;
+
         if (gm.curLevel.curFoundIdeas >= gm.curLevel.ideaCount)
         {
             gm.GoToNextLevel();

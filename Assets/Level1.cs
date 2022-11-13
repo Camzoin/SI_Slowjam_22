@@ -146,6 +146,8 @@ public class Level1 : MonoBehaviour
 
         gm.ppAnimator.SetTrigger("BaW");
 
+        gm.inputManager.playerCanAct = false;
+
         idea.hasBeenCollected = true;
 
         //gm.camCenterTransform.rotation = idea.transform.rotation;
