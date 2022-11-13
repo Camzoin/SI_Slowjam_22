@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 2948382907262297708}
   - component: {fileID: 2948382907262297707}
   - component: {fileID: 4563917820344761651}
+  - component: {fileID: 2874538279388866483}
   m_Layer: 0
   m_Name: Level 1
   m_TagString: Untagged
@@ -46,7 +47,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c2ea55683ecf15246ad5cddabbff7543, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ideaCount: 8
+  ideaCount: 7
   ideaPrefab: {fileID: 1832774428363432893, guid: a98d29755893f714998215fc357eff9a,
     type: 3}
   curIdeas: []
@@ -54,7 +55,6 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 3f507541824eefb4fb0e58d6dd8dcb68, type: 2}
   - {fileID: 11400000, guid: b41d1ebfb5c9f5c47af6031304a30354, type: 2}
   - {fileID: 11400000, guid: a56cde6a37f1bbb419d40ac00eb5127f, type: 2}
-  - {fileID: 11400000, guid: 82d247e6c0bb78641954f1dbad641ea3, type: 2}
   - {fileID: 11400000, guid: d334614ab6274e344af7a23f2c9e3508, type: 2}
   - {fileID: 11400000, guid: f9044136544dd9347a9f9d86bc51b665, type: 2}
   - {fileID: 11400000, guid: bcef57454cf90c54dbf9d0a8462ed17a, type: 2}
@@ -127,6 +127,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+  psAnimator: {fileID: 2874538279388866483}
 --- !u!95 &4563917820344761651
 Animator:
   serializedVersion: 4
@@ -147,6 +148,27 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &2874538279388866483
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2948382907262297706}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c6f2dcc0a8553ab479d4080bb34a6089, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  particleSystems:
+  - {fileID: 2948382908343531004}
+  - {fileID: 2948382909246438107}
+  - {fileID: 5514329848092542813}
+  crmbleTime: 5
+  startSpeed: 10
+  maxDist: 20
+  centerpoint: {fileID: 0}
+  camTransform: {fileID: 0}
 --- !u!1001 &5514329847760739848
 PrefabInstance:
   m_ObjectHideFlags: 0

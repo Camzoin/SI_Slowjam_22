@@ -59,6 +59,29 @@ public class Idea : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
+    }
+
+    public void ShrinkMe()
+    {
+        StartCoroutine(ShrinkBackboard());
+    }
+
+    public IEnumerator ShrinkBackboard()
+    {
+        float elapsedTime = 0f;
+        float waitTime = 1f;
+
+        while (elapsedTime < waitTime)
+        {
+            backboard.localScale = Vector3.Lerp(backboard.localScale, Vector3.zero, elapsedTime / waitTime);
+
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+
+        Destroy(this.gameObject);
+
+        yield return null;
     }
 }

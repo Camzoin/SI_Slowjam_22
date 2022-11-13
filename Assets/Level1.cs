@@ -37,6 +37,11 @@ public class Level1 : MonoBehaviour
 
     public AnimationCurve shapeScale;
 
+    public PSAnimationTest psAnimator;
+    
+    //DO THIS LATER
+    private static readonly int SetIcon = Shader.PropertyToID("_SetIcon");
+
     // Start is called before the first frame update
     void Start()
     {
@@ -56,7 +61,9 @@ public class Level1 : MonoBehaviour
         splitNoun = noun.Split(new[] { " " }, System.StringSplitOptions.None);
 
         //Sets base position of hue
-        float hueAdditionalOffset = Random.Range(0f, 1f);
+        float hueAdditionalOffset = Random.Range(0.65f, 1.4f);
+
+        //float hueAdditionalOffset = 0.6f;
 
         for (int i = 0; i < ideaCount; i++)
         {
@@ -64,20 +71,21 @@ public class Level1 : MonoBehaviour
 
             curIdeas.Add(p);
 
-            //This is bad but ¯\_(?)_/¯ 
+            //This is bad but ï¿½\_(?)_/ï¿½ 
             Quaternion newRotation = Random.rotation;
+
 
             if (curIdeas.Count > 1)
             {
-                for (int k = 0; k < 1000; k++)
+                for (int k = 0; k < 100; k++)
                 {
                     foreach (Idea idea in curIdeas)
                     {
-                        if(Mathf.Abs(idea.transform.rotation.eulerAngles.y - newRotation.eulerAngles.y) + Mathf.Abs(idea.transform.rotation.eulerAngles.x - newRotation.eulerAngles.x) + (Mathf.Abs(idea.transform.rotation.eulerAngles.z - newRotation.eulerAngles.z) / 2 ) < 200)
+                        if(Vector3.Angle(idea.transform.forward, newRotation * Vector3.forward) < 50)
                         {
-                            if (k > 998)
+                            if (k > 98)
                             {
-                                Debug.Log(i + " needed to be reset " + k + " times " + (Mathf.Abs(idea.transform.rotation.eulerAngles.y - newRotation.eulerAngles.y) + Mathf.Abs(idea.transform.rotation.eulerAngles.x - newRotation.eulerAngles.x) + (Mathf.Abs(idea.transform.rotation.eulerAngles.z - newRotation.eulerAngles.z) / 2)));
+                                Debug.Log(i + " needed to be reset " + k + " times " + Vector3.Angle(idea.transform.forward, newRotation * Vector3.forward));
                             }
                             
 
@@ -111,7 +119,7 @@ public class Level1 : MonoBehaviour
 
             string sonet = splitAdj[Random.Range(0, splitAdj.Length)] + " " + splitNoun[Random.Range(0, splitNoun.Length)];
 
-            p.displayString = sonet;         
+            p.displayString = sonet;
         }
     }
 
@@ -140,11 +148,15 @@ public class Level1 : MonoBehaviour
 
         idea.hasBeenCollected = true;
 
-        gm.camCenterTransform.GetComponent<Rigidbody>().angularVelocity = Vector3.zero;
+        //gm.camCenterTransform.rotation = idea.transform.rotation;
 
-        gm.camCenterTransform.rotation = idea.transform.rotation;
+        idea.curTextMat.SetFloat("_FreakOut", 1);
 
-        idea.dp.material.SetFloat("_FreakOut", 1);
+        gm.allStringsCollected.Add(idea.displayString);
+
+        gm.ideaCollectedCount += 1;
+
+        
 
         //Crack specific
         //curObjectMat.SetFloat("_Crack", crackValues[curFoundIdeas]);
@@ -173,17 +185,19 @@ public class Level1 : MonoBehaviour
 
         while (elapsedTime < backboardWaitTime)
         {
+
+
             // Make sure we got there THIS WILL BE TEXT LEGIBILITY + VISIBLITY
 
             foreach(Idea i in curIdeas)
             {
-                float angle = Quaternion.Angle(i.transform.rotation, gm.camCenterTransform.transform.rotation);
+                float dot = (Vector3.Dot(i.transform.forward, gm.camCenterTransform.forward) + 1) / 2;
 
                 i.curTextMat.SetFloat("_ValueAdd", Mathf.Lerp(100, 0, (elapsedTime / waitTime)));
 
-                i.curTextMat.SetFloat("_TextLegibility", Mathf.Lerp(1, Mathf.Lerp(1, 0, angle / 180 * gm.rotationOffsetSensitivity), (elapsedTime / waitTime)));
+                i.curTextMat.SetFloat("_TextLegibility", Mathf.Lerp(1, Mathf.Lerp(0, 1, Mathf.Clamp01(dot - gm.textBlurAngle)), (elapsedTime / waitTime)));
 
-                i.curTextMat.SetFloat("_AlphaMulti", Mathf.Lerp(1, Mathf.Lerp(1, 0, angle / 180 * (gm.rotationOffsetSensitivity * 1.5f)), (elapsedTime / waitTime)));
+                i.curTextMat.SetFloat("_AlphaMulti", Mathf.Lerp(1, Mathf.Lerp(0, 1, Mathf.Clamp01(dot - gm.textDisapearAngle)), (elapsedTime / waitTime)));
 
                 if (elapsedTime > waitTime / 2)
                 {
@@ -200,13 +214,13 @@ public class Level1 : MonoBehaviour
 
         foreach (Idea i in curIdeas)
         {
-            float angle = Quaternion.Angle(i.transform.rotation, gm.camCenterTransform.transform.rotation);
+            float dot = (Vector3.Dot(i.transform.forward, gm.camCenterTransform.forward) + 1) / 2;
+
+            i.curTextMat.SetFloat("_TextLegibility", Mathf.Lerp(0, 1, Mathf.Clamp01(dot - gm.textBlurAngle)));
+
+            i.curTextMat.SetFloat("_AlphaMulti", Mathf.Lerp(0, 1, Mathf.Clamp01(dot - gm.textDisapearAngle)));
 
             i.curTextMat.SetFloat("_ValueAdd", 0);
-
-            i.curTextMat.SetFloat("_TextLegibility", Mathf.Lerp(1, 0, angle / 180 * gm.rotationOffsetSensitivity));
-
-            i.curTextMat.SetFloat("_AlphaMulti", Mathf.Lerp(1, 0, angle / 180 * (gm.rotationOffsetSensitivity * 1.5f)));
 
             i.backboard.localScale = new Vector3(i.size / 5, i.size / 5, i.size / 5);
         }

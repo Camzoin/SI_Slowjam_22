@@ -23,6 +23,8 @@ public class textKiller : StateMachineBehaviour
 
         gm.curIdeaToDestroy.dp.gameObject.SetActive(false);
 
+        gm.curIdeaToDestroy.ShrinkMe();
+
         gm.curIdeaToDestroy = null;
 
         if (gm.curLevel.curFoundIdeas >= gm.curLevel.ideaCount)
