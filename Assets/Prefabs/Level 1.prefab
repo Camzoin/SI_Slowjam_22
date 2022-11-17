@@ -47,7 +47,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c2ea55683ecf15246ad5cddabbff7543, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ideaCount: 7
+  ideaCount: 3
   ideaPrefab: {fileID: 1832774428363432893, guid: a98d29755893f714998215fc357eff9a,
     type: 3}
   curIdeas: []

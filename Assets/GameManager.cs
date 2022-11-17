@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using static UnityEngine.Mathf;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
@@ -37,6 +38,10 @@ public class GameManager : MonoBehaviour
     public float textBlurAngle = 50f, textDisapearAngle = 100f;
 
     public List<Idea> collectedIdeas;
+
+    public float timeToCollectCurLevel = 60f, curtimeToCollectCurLevel = 0f;
+
+    public Image timerFillImage;
 
     [Header("Movement Settings")]
     [Tooltip("Constant drag applied to latteral movement")]
@@ -94,8 +99,49 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if(ideaMenuIdea.transform.childCount > 8)
+        {
+            //Do the first option
+        }
+
         if (curLevel != null)
         {
+            curtimeToCollectCurLevel += Time.deltaTime;
+
+            float percentTimeRemaining = 1 - (curtimeToCollectCurLevel / timeToCollectCurLevel);
+
+            timerFillImage.fillAmount = percentTimeRemaining;
+
+
+
+            if (percentTimeRemaining < 0.2f && percentTimeRemaining > 0)
+            {
+                float adjPercentTimeRemaining = 1 - (percentTimeRemaining * 5);
+
+                ppAnimator.SetLayerWeight(0, Mathf.Lerp(1, 0, adjPercentTimeRemaining));
+
+                ppAnimator.SetLayerWeight(1, Mathf.Lerp(0, 0.05f, adjPercentTimeRemaining));
+            }
+            else
+            {
+                ppAnimator.SetLayerWeight(1, 0);
+            }
+
+            //If you go over time explode
+
+            if (percentTimeRemaining < 0)
+            {
+                //DIE
+
+                foreach(Idea yu in curLevel.curIdeas)
+                {
+                    Destroy(yu.gameObject);
+                }
+
+                GoToNextLevel();
+            }
+            
+
                 foreach (Idea i in curLevel.curIdeas)
                 {
                     if (i != null)
@@ -139,126 +185,128 @@ public class GameManager : MonoBehaviour
 
 
 
-                if(closestIdea != null)
-                {
-                    //      Basic idea here is that instead of the aim-assist being a direct movement applied to our object, we extrapolate the aim-assist
-                    // and the player's input into forces that are applied to a single velocity, making things feel more 'physical' and therefore intuitive.
-                    // A couple key ideas:
-                    //      > "1f - Time.deltaTime * drag" is our drag formula. It's essentially an estimation of drag forces for discrete time-steps.
-                    //          Gets less accurate with lower framerates but should be fine as long as nothing goes sub-twenty.
-                    //      > The goal of "inputActivity" is to decrease the aim-assist whenever we're actively moving the camera. It's treated essentially
-                    //          as a velocity on an invisible axis, with forces applied alongside inputs and a constant drag applied.
+                
+        }
 
-                    // IMPLEMENTATION DETAILS:
-                    // When you're implementing, the primary things you'll wanna replace are 'target' and 'pivot'
-                    // For calculations, getting the right transforms is really all your need,
-                    // so just replace these assignments  with whatever and that's all good
-                    Transform pivot = camCenterTransform; // <-- probably just your camera transform
-                    Transform target = closestIdea.transform; // <-- probably just the nearest word
+        if (closestIdea != null)
+        {
+            //      Basic idea here is that instead of the aim-assist being a direct movement applied to our object, we extrapolate the aim-assist
+            // and the player's input into forces that are applied to a single velocity, making things feel more 'physical' and therefore intuitive.
+            // A couple key ideas:
+            //      > "1f - Time.deltaTime * drag" is our drag formula. It's essentially an estimation of drag forces for discrete time-steps.
+            //          Gets less accurate with lower framerates but should be fine as long as nothing goes sub-twenty.
+            //      > The goal of "inputActivity" is to decrease the aim-assist whenever we're actively moving the camera. It's treated essentially
+            //          as a velocity on an invisible axis, with forces applied alongside inputs and a constant drag applied.
 
-                    // For the application of the velocity, if you don't have a pivot transform, you may need to do 'RotateAround' once for each local axis
-                    // Honestly I'd recommend just putting the camera under a pivot transform at the center, but whatever works ¯\_(?)_/¯   
+            // IMPLEMENTATION DETAILS:
+            // When you're implementing, the primary things you'll wanna replace are 'target' and 'pivot'
+            // For calculations, getting the right transforms is really all your need,
+            // so just replace these assignments  with whatever and that's all good
+            Transform pivot = camCenterTransform; // <-- probably just your camera transform
+            Transform target = closestIdea.transform; // <-- probably just the nearest word
+
+            // For the application of the velocity, if you don't have a pivot transform, you may need to do 'RotateAround' once for each local axis
+            // Honestly I'd recommend just putting the camera under a pivot transform at the center, but whatever works ¯\_(?)_/¯   
 
 
 
 
 
-                    #region ============= AIM ASSIST =============
+            #region ============= AIM ASSIST =============
 
-                    #region === PLANAR-ASSIST ===
-                    // 0 to 1 scalar, if we're inputting it'll down and 
-                    float activityScalar = 1f - Clamp01(inputActivity);
-                    // if we're not within a 90 degree angle to the target, dont do any AA, to prevent effects on the flip-side
-                    if (Vector3.Dot(target.forward, pivot.forward) < 0f)
-                        activityScalar = 0f;
+            #region === PLANAR-ASSIST ===
+            // 0 to 1 scalar, if we're inputting it'll down and 
+            float activityScalar = 1f - Clamp01(inputActivity);
+            // if we're not within a 90 degree angle to the target, dont do any AA, to prevent effects on the flip-side
+            if (Vector3.Dot(target.forward, pivot.forward) < 0f)
+                activityScalar = 0f;
 
-                    Vector3 planarRelativeForward = pivot.InverseTransformDirection(target.forward);
-                    Vector2 planarDiff = new Vector2(planarRelativeForward.x, planarRelativeForward.y);
+            Vector3 planarRelativeForward = pivot.InverseTransformDirection(target.forward);
+            Vector2 planarDiff = new Vector2(planarRelativeForward.x, planarRelativeForward.y);
 
-                    float planarMaxDiff = Sin((planarGravMaxAngle / 180f) * PI); // max angle converted to linear distance
+            float planarMaxDiff = Sin((planarGravMaxAngle / 180f) * PI); // max angle converted to linear distance
 
-                    float planarDist = Clamp01(planarDiff.magnitude / planarMaxDiff); // 0-1 distance used for curve eval
-                    float planarGrav = gravCurve.Evaluate(planarDist) * activityScalar * planarGravStength;
-                    float planarGravDrag = gravDragCurve.Evaluate(planarDist) * activityScalar * activityScalar * planarGravDragStrength; // activityScalar is squared here so drag applys mostly only when completely inactive
+            float planarDist = Clamp01(planarDiff.magnitude / planarMaxDiff); // 0-1 distance used for curve eval
+            float planarGrav = gravCurve.Evaluate(planarDist) * activityScalar * planarGravStength;
+            float planarGravDrag = gravDragCurve.Evaluate(planarDist) * activityScalar * activityScalar * planarGravDragStrength; // activityScalar is squared here so drag applys mostly only when completely inactive
 
-                    // apply our grav force to the velocity 
-                    planarVelocity += -planarDiff.normalized * planarGrav * Time.deltaTime; // apply planar-assist gravity
-                    planarVelocity *= 1f - Time.deltaTime * planarGravDrag; // apply planar-assist drag
-                    #endregion === ----------- ===
+            // apply our grav force to the velocity 
+            planarVelocity += -planarDiff.normalized * planarGrav * Time.deltaTime; // apply planar-assist gravity
+            planarVelocity *= 1f - Time.deltaTime * planarGravDrag; // apply planar-assist drag
+            #endregion === ----------- ===
 
-                    #region === ROLL-ASSIST ===
-                    // square our planar distance to use as a scalar, so we only do roll assist when we're nearby. This could be cubed if you really wanna crack down.
-                    float planarDistMult = (1f - planarDist) * (1f - planarDist);
+            #region === ROLL-ASSIST ===
+            // square our planar distance to use as a scalar, so we only do roll assist when we're nearby. This could be cubed if you really wanna crack down.
+            float planarDistMult = (1f - planarDist) * (1f - planarDist);
 
-                    // Roll calculations are just a 1D copy of the planar stuff
-                    Vector3 rollRelativeUp = pivot.InverseTransformDirection(target.up);
-                    float rollDiff = rollRelativeUp.x;
+            // Roll calculations are just a 1D copy of the planar stuff
+            Vector3 rollRelativeUp = pivot.InverseTransformDirection(target.up);
+            float rollDiff = rollRelativeUp.x;
 
-                    float rollMaxDiff = Sin((rollGravMaxAngle / 180f) * PI);
+            float rollMaxDiff = Sin((rollGravMaxAngle / 180f) * PI);
 
-                    float rollDist = Clamp01(Abs(rollDiff) / rollMaxDiff);
-                    float rollGrav = gravCurve.Evaluate(rollDist) * activityScalar * rollGravStrength * planarDistMult; // added planar dist scalar to gravity and drag
-                    float rollGravDrag = gravDragCurve.Evaluate(rollDist) * activityScalar * activityScalar * rollGravDragStrength * planarDistMult;
+            float rollDist = Clamp01(Abs(rollDiff) / rollMaxDiff);
+            float rollGrav = gravCurve.Evaluate(rollDist) * activityScalar * rollGravStrength * planarDistMult; // added planar dist scalar to gravity and drag
+            float rollGravDrag = gravDragCurve.Evaluate(rollDist) * activityScalar * activityScalar * rollGravDragStrength * planarDistMult;
 
-                    rollVelocity += Sign(-rollDiff) * rollGrav * Time.deltaTime;
-                    rollVelocity *= 1f - Time.deltaTime * rollGravDrag;
-                    #endregion === ----------- ===
+            rollVelocity += Sign(-rollDiff) * rollGrav * Time.deltaTime;
+            rollVelocity *= 1f - Time.deltaTime * rollGravDrag;
+            #endregion === ----------- ===
 
-                    #endregion ============= ---------- =============
+            #endregion ============= ---------- =============
 
-                    #region ============= DRAG =============
-                    // apply planar drag
-                    float pVel = planarVelocity.magnitude;
-                    pVel *= 1f - Time.deltaTime * planarDrag;
-                    planarVelocity = planarVelocity.normalized * pVel;
+            #region ============= DRAG =============
+            // apply planar drag
+            float pVel = planarVelocity.magnitude;
+            pVel *= 1f - Time.deltaTime * planarDrag;
+            planarVelocity = planarVelocity.normalized * pVel;
 
-                    // apply roll drag
-                    rollVelocity *= 1f - Time.deltaTime * rollDrag;
-                    #endregion ============= ---- =============
+            // apply roll drag
+            rollVelocity *= 1f - Time.deltaTime * rollDrag;
+            #endregion ============= ---- =============
 
-                    // apply our velocity as a rotation-over-time, relative to the local axes
-                    Vector3 rotation = new Vector3(planarVelocity.y, -planarVelocity.x, rollVelocity) * Time.deltaTime;
-                    pivot.Rotate(rotation, Space.Self);
+            // apply our velocity as a rotation-over-time, relative to the local axes
+            Vector3 rotation = new Vector3(planarVelocity.y, -planarVelocity.x, rollVelocity) * Time.deltaTime;
+            pivot.Rotate(rotation, Space.Self);
 
-                    float dot = (Vector3.Dot(closestIdea.transform.forward, camCenterTransform.forward) + 1) / 2;
+            float dot = (Vector3.Dot(closestIdea.transform.forward, camCenterTransform.forward) + 1) / 2;
 
-                    if (dot > 0.99999f && closestIdea.hasBeenCollected == false)
-                    {
-                        curLevel.IdeaFound(closestIdea);
-
-                        closestIdea.hasBeenCollected = true;
-
-                        planarVelocity = Vector2.zero;
-
-                        rollVelocity = 0f;
-
-                        collectedIdeas.Add(closestIdea);
-
-                        var spawnedIdea = Instantiate(ideaMenuIdea, ideaMenuTransform);
-
-                        TextMeshProUGUI ideaText = spawnedIdea.GetComponent<TextMeshProUGUI>();
-
-                        ideaText.font = closestIdea.textField.font;
-
-                        ideaText.text = closestIdea.displayString;
-                    }
-                }
-                else
+            if (dot > 0.99999f && closestIdea.hasBeenCollected == false)
             {
-                #region ============= DRAG =============
-                // apply planar drag
-                float pVel = planarVelocity.magnitude;
-                pVel *= 1f - Time.deltaTime * planarDrag;
-                planarVelocity = planarVelocity.normalized * pVel;
+                curLevel.IdeaFound(closestIdea);
 
-                // apply roll drag
-                rollVelocity *= 1f - Time.deltaTime * rollDrag;
-                #endregion ============= ---- =============
+                closestIdea.hasBeenCollected = true;
 
-                // apply our velocity as a rotation-over-time, relative to the local axes
-                Vector3 rotation = new Vector3(planarVelocity.y, -planarVelocity.x, rollVelocity) * Time.deltaTime;
-                camCenterTransform.Rotate(rotation, Space.Self);
+                planarVelocity = Vector2.zero;
+
+                rollVelocity = 0f;
+
+                collectedIdeas.Add(closestIdea);
+
+                var spawnedIdea = Instantiate(ideaMenuIdea, ideaMenuTransform);
+
+                TextMeshProUGUI ideaText = spawnedIdea.GetComponent<TextMeshProUGUI>();
+
+                ideaText.font = closestIdea.textField.font;
+
+                ideaText.text = closestIdea.displayString;
             }
+        }
+        else
+        {
+            #region ============= DRAG =============
+            // apply planar drag
+            float pVel = planarVelocity.magnitude;
+            pVel *= 1f - Time.deltaTime * planarDrag;
+            planarVelocity = planarVelocity.normalized * pVel;
+
+            // apply roll drag
+            rollVelocity *= 1f - Time.deltaTime * rollDrag;
+            #endregion ============= ---- =============
+
+            // apply our velocity as a rotation-over-time, relative to the local axes
+            Vector3 rotation = new Vector3(planarVelocity.y, -planarVelocity.x, rollVelocity) * Time.deltaTime;
+            camCenterTransform.Rotate(rotation, Space.Self);
         }
     }
 
@@ -267,6 +315,8 @@ public class GameManager : MonoBehaviour
     {
         if (curLevel != null)
         {
+            curtimeToCollectCurLevel = 0;
+
             //Destroy(curLevel.gameObject);
 
             curLevel.psAnimator.Crumble();
@@ -276,6 +326,8 @@ public class GameManager : MonoBehaviour
         else
         {
             var p = Instantiate(levelToSpawn);
+
+            curtimeToCollectCurLevel = 0;
 
             curLevel = p;
 
@@ -302,6 +354,8 @@ public class GameManager : MonoBehaviour
         Destroy(curLevel.gameObject);
 
         var p = Instantiate(levelToSpawn);
+
+        curtimeToCollectCurLevel = 0f;
 
         curLevel = p;
 

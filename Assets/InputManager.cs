@@ -75,27 +75,27 @@ public class InputManager : MonoBehaviour
             //    oldMousePos = Input.mousePosition;
             //}
 
-            //if (Input.GetButton("Fire2"))
-            //{
-            //    if (zoomLerp < 1)
-            //    {
-            //        zoomLerp += Time.deltaTime * 5;
-            //    }
-            //    else if (zoomLerp > 1)
-            //    {
-            //        zoomLerp = 1;
-            //    }
+            if (Input.GetButton("Jump"))
+            {
+                if (zoomLerp < 1)
+                {
+                    zoomLerp += Time.deltaTime * 5;
+                }
+                else if (zoomLerp > 1)
+                {
+                    zoomLerp = 1;
+                }
 
-            //}
-            //else if (zoomLerp > 0)
-            //{
-            //    zoomLerp -= Time.deltaTime * 5;
+            }
+            else if (zoomLerp > 0)
+            {
+                zoomLerp -= Time.deltaTime * 5;
 
-            //    if (zoomLerp < 0)
-            //    {
-            //        zoomLerp = 0;
-            //    }
-            //}
+                if (zoomLerp < 0)
+                {
+                    zoomLerp = 0;
+                }
+            }
 
 
             //if (Input.GetButton("RotateLeft"))
@@ -109,7 +109,7 @@ public class InputManager : MonoBehaviour
             //}
 
 
-            //mainCam.orthographicSize = Mathf.Lerp(camZoomMinMax.y, camZoomMinMax.x, zoomLerp);
+            mainCam.orthographicSize = Mathf.Lerp(camZoomMinMax.y, camZoomMinMax.x, zoomLerp);
         }
 
         if(0.7f > Input.mousePosition.x / Screen.width)
