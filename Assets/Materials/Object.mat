@@ -57,6 +57,7 @@ Material:
     m_Floats:
     - _BG_Scale: 0.1
     - _BG_Seed: 560
+    - _ColorLerp: 0
     - _Crack: 0
     - _Display_Text: 1
     - _Float: 0
@@ -72,8 +73,8 @@ Material:
     - _Vert_OFsset: 1
     m_Colors:
     - _Color: {r: 1, g: 0.42205858, b: 0.135849, a: 0}
-    - _Color_1: {r: 0.1792453, g: 0.1792453, b: 0.1792453, a: 1}
-    - _Color_2: {r: 0, g: 0, b: 0, a: 1}
+    - _Color_1: {r: 0, g: 0, b: 0, a: 1}
+    - _Color_2: {r: 0.11320752, g: 0.11320752, b: 0.11320752, a: 1}
     - _LegibleBoxAdd: {r: 1, g: 1, b: 1, a: 0}
     - _LegibleBoxMulti: {r: 26.4, g: 1, b: 1, a: 0}
     - _LegibleBoxPos: {r: 1.21, g: 0, b: -7.73, a: 0}

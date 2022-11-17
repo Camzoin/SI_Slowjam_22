@@ -1181,9 +1181,10 @@ MonoBehaviour:
   textBlurAngle: 0
   textDisapearAngle: 0.3
   collectedIdeas: []
-  timeToCollectCurLevel: 120
+  timeToCollectCurLevel: 60
   curtimeToCollectCurLevel: 0
   timerFillImage: {fileID: 1118322986}
+  backgroundRenderer: {fileID: 403709593}
   planarDrag: 5
   rollDrag: 5
   planarScalar: 0.4

@@ -16,9 +16,13 @@ public class PSAnimationTest : MonoBehaviour
 
     public Transform camTransform;
 
+    public float exploadMulti = 1;
 
+    public Level1 level;
 
-    private bool hasStarted = false;
+    public bool hasStarted = false;
+
+    public bool hasDied = false;
 
     private float particlespawnCurTime = 0;
 
@@ -149,11 +153,171 @@ public class PSAnimationTest : MonoBehaviour
                 particleSystems[r].SetParticles(particles, currentAmount);
             }  
         }
+
+        if (hasDied == true)
+        {
+            level.DecreaseVertOffset(Time.deltaTime * exploadMulti * 4);
+
+            for (int r = 0; r < particleSystems.Count; r++)
+            {
+
+                particleCount = particleSystems[r].particleCount;
+
+                var particles = new ParticleSystem.Particle[particleCount];
+                var currentAmount = particleSystems[r].GetParticles(particles);
+
+                if (particlespawnCurTime > crmbleTime)
+                {
+                    particlespawnCurTime = 0;
+
+                    particlesUpdating = false;
+                }
+
+                if (particlesUpdating == true)
+                {
+                    particlespawnCurTime += Time.fixedDeltaTime;
+
+                    // Change only the particles that are alive
+                    for (int i = 0; i < currentAmount; i++)
+                    {
+                        float dist;
+
+                        //Use my trasform
+                        dist = Vector3.Distance(particles[i].position, centerpoint.position);
+
+                        float goodDist = 1 - dist;
+
+                        if (r == 0)
+                        {
+                            if (dist < Mathf.Lerp(0, maxDist, particlespawnCurTime / crmbleTime) && hasShot0[i] == false)
+                            {
+                                hasShot0[i] = true;
+                            }
+                        }
+                        else if (r == 1)
+                        {
+                            if (dist < Mathf.Lerp(0, maxDist, particlespawnCurTime / crmbleTime) && hasShot1[i] == false)
+                            {
+                                hasShot1[i] = true;
+                            }
+
+                        }
+                        else if (r == 2)
+                        {
+                            if (dist < Mathf.Lerp(0, maxDist, particlespawnCurTime / crmbleTime) && hasShot2[i] == false)
+                            {
+                                hasShot2[i] = true;
+                            }
+                        }
+                    }
+                }
+
+                for (int i = 0; i < currentAmount; i++)
+                {
+                    if (r == 0)
+                    {
+                        Vector3 pos;
+
+                        Vector3 scale;
+
+                        if (hasShot0[i] == true)
+                        {
+                            pos = particles[i].position;
+
+                            pos *= 1 + (Time.deltaTime * exploadMulti);
+
+                            particles[i].position = pos;
+
+
+                            scale = particles[i].startSize3D;
+
+                            scale *= 1 - (Time.deltaTime * exploadMulti * 4);
+
+                            particles[i].startSize3D = scale;
+                        }
+                    }
+                    else if (r == 1)
+                    {
+                        Vector3 pos;
+
+                        Vector3 scale;
+
+                        if (hasShot1[i] == true)
+                        {
+                            pos = particles[i].position;
+
+                            pos *= 1 + (Time.deltaTime * exploadMulti);
+
+                            particles[i].position = pos;
+
+
+                            scale = particles[i].startSize3D;
+
+                            scale *= 1 - (Time.deltaTime * exploadMulti * 4);
+
+                            particles[i].startSize3D = scale;
+                        }
+                    }
+
+                    else if (r == 2)
+                    {
+                        Vector3 pos;
+
+                        Vector3 scale;
+
+                        if (hasShot2[i] == true)
+                        {
+                            pos = particles[i].position;
+
+                            pos *= 1 + (Time.deltaTime * exploadMulti);
+
+                            particles[i].position = pos;
+
+
+                            scale = particles[i].startSize3D;
+
+                            scale *= 1 - (Time.deltaTime * exploadMulti * 4);
+
+                            particles[i].startSize3D = scale;
+                        }
+                    }
+                }
+
+                particleSystems[r].SetParticles(particles, currentAmount);
+            }
+        }
     }
 
     public void Crumble()
     {
         hasStarted = true;
+
+        hasShot0 = new List<bool>();
+
+        hasShot1 = new List<bool>();
+
+        hasShot2 = new List<bool>();
+
+        foreach (ParticleSystem ps in particleSystems)
+        {
+            ParticleSystem.MainModule _main = ps.main;
+        }
+
+        particlesUpdating = true;
+
+        for (int i = 0; i < particleCount; i++)
+        {
+            hasShot0.Add(false);
+
+            hasShot1.Add(false);
+
+            hasShot2.Add(false);
+        }
+    }
+
+    public void Explode()
+    {
+        hasDied = true;
 
         hasShot0 = new List<bool>();
 

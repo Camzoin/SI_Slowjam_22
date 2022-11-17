@@ -38,7 +38,7 @@ public class Level1 : MonoBehaviour
     public AnimationCurve shapeScale;
 
     public PSAnimationTest psAnimator;
-    
+
     //DO THIS LATER
     private static readonly int SetIcon = Shader.PropertyToID("_SetIcon");
 
@@ -53,7 +53,7 @@ public class Level1 : MonoBehaviour
 
         foreach (ParticleSystemRenderer psr in psRenderers)
         {
-            psr.material = curObjectMat;
+            psr.material = new Material(psr.material);
         }
 
         splitAdj = adj.Split(new[] { " " },  System.StringSplitOptions.None);
@@ -126,7 +126,7 @@ public class Level1 : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(gm.curIdeaToDestroy != null)
+        if (gm.curIdeaToDestroy != null)
         {
             for (int i = 0; i < ideaCount; i++)
             {
@@ -177,6 +177,14 @@ public class Level1 : MonoBehaviour
     public void DoneSpawning()
     {
         isSpawning = false;
+    }
+
+    public void DecreaseVertOffset(float offset)
+    {
+        foreach(ParticleSystemRenderer psr in psRenderers)
+        {
+            psr.material.SetFloat("_Vert_OFsset", Mathf.Clamp01(psr.material.GetFloat("_Vert_OFsset") - offset));
+        }
     }
 
     IEnumerator SpawnTextAnim()

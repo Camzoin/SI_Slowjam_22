@@ -43,6 +43,8 @@ public class GameManager : MonoBehaviour
 
     public Image timerFillImage;
 
+    public MeshRenderer backgroundRenderer;
+
     [Header("Movement Settings")]
     [Tooltip("Constant drag applied to latteral movement")]
     public float planarDrag = 5f;
@@ -93,7 +95,7 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
+        backgroundRenderer.material = new Material(backgroundRenderer.material);
     }
 
     // Update is called once per frame
@@ -106,26 +108,81 @@ public class GameManager : MonoBehaviour
 
         if (curLevel != null)
         {
-            curtimeToCollectCurLevel += Time.deltaTime;
+            //PP + smooth stuff
 
+            if (curLevel.psAnimator.hasStarted == false && curLevel.psAnimator.hasDied == false && curLevel.isSpawning == false)
+            {
+                curtimeToCollectCurLevel += Time.deltaTime;
+            }
+            
             float percentTimeRemaining = 1 - (curtimeToCollectCurLevel / timeToCollectCurLevel);
 
-            timerFillImage.fillAmount = percentTimeRemaining;
+            if (curLevel.psAnimator.hasDied == true)
+            {
+                backgroundRenderer.material.SetFloat("_ColorLerp", Clamp01(backgroundRenderer.material.GetFloat("_ColorLerp") + (Time.deltaTime / 2)));
 
+                percentTimeRemaining = 0;
+            }
 
+            if (percentTimeRemaining < 0.3f && percentTimeRemaining >= 0.2f)
+            {
+                backgroundRenderer.material.SetFloat("_ColorLerp", Clamp01(backgroundRenderer.material.GetFloat("_ColorLerp") + (Time.deltaTime * 2)));
 
-            if (percentTimeRemaining < 0.2f && percentTimeRemaining > 0)
+                foreach (ParticleSystemRenderer psr in curLevel.psRenderers)
+                {
+                    psr.material.SetFloat("_ColorLerp", backgroundRenderer.material.GetFloat("_ColorLerp"));
+                }
+
+                foreach(Idea ide in curLevel.curIdeas)
+                {
+                    if (ide.backboardRenderer != null)
+                    {
+                        ide.backboardRenderer.material.SetFloat("_ColorLerp", backgroundRenderer.material.GetFloat("_ColorLerp"));
+                    }
+                }
+            }
+            if ((percentTimeRemaining < 0.2f && percentTimeRemaining >= 0) || percentTimeRemaining < 0)
             {
                 float adjPercentTimeRemaining = 1 - (percentTimeRemaining * 5);
 
-                ppAnimator.SetLayerWeight(0, Mathf.Lerp(1, 0, adjPercentTimeRemaining));
+                ppAnimator.SetLayerWeight(0, Lerp(1, 0, adjPercentTimeRemaining));
 
-                ppAnimator.SetLayerWeight(1, Mathf.Lerp(0, 0.05f, adjPercentTimeRemaining));
+                ppAnimator.SetLayerWeight(1, Lerp(0, 0.05f, adjPercentTimeRemaining));
+
+                backgroundRenderer.material.SetFloat("_ColorLerp", Clamp01(backgroundRenderer.material.GetFloat("_ColorLerp") + (Time.deltaTime * 2)));
+
+                foreach (ParticleSystemRenderer psr in curLevel.psRenderers)
+                {
+                    psr.material.SetFloat("_ColorLerp", 0);
+
+                    psr.material.SetColor("_Color_2", Color.Lerp(psr.material.GetColor("_Color_2"), new Color(0.2641509f, 0.2641509f, 0.2641509f, 1), adjPercentTimeRemaining));
+                }
+                
+                foreach (Idea ide in curLevel.curIdeas)
+                {
+                    if(ide.backboardRenderer != null)
+                    {
+                        ide.backboardRenderer.material.SetFloat("_ColorLerp", backgroundRenderer.material.GetFloat("_ColorLerp"));
+
+                        ide.backboardRenderer.material.SetColor("_Color_2", new Color(0.2641509f, 0.2641509f, 0.2641509f, 1));
+                    }
+                }
             }
             else
             {
+                foreach (ParticleSystemRenderer psr in curLevel.psRenderers)
+                {
+                    psr.material.SetFloat("_ColorLerp", Clamp01(psr.material.GetFloat("_ColorLerp") - (Time.deltaTime * 2)));
+                }
+
+                backgroundRenderer.material.SetFloat("_ColorLerp", Clamp01(backgroundRenderer.material.GetFloat("_ColorLerp") - (Time.deltaTime / 2)));
+
+                ppAnimator.SetLayerWeight(0, Clamp01(ppAnimator.GetLayerWeight(0) + Time.deltaTime));
+
                 ppAnimator.SetLayerWeight(1, 0);
             }
+
+            timerFillImage.fillAmount = percentTimeRemaining;
 
             //If you go over time explode
 
@@ -135,10 +192,14 @@ public class GameManager : MonoBehaviour
 
                 foreach(Idea yu in curLevel.curIdeas)
                 {
-                    Destroy(yu.gameObject);
+                    yu.ShrinkMe();
                 }
 
-                GoToNextLevel();
+                curtimeToCollectCurLevel = 0;
+
+                curLevel.psAnimator.Explode();
+
+                StartCoroutine(WaitToSpawnNextlevel());
             }
             
 

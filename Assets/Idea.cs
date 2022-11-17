@@ -13,6 +13,7 @@ public class Idea : MonoBehaviour
     public TextMeshProUGUI textField;
     public Material textMat;
     public Camera highResCam, medResCam, lowResCam;
+    public MeshRenderer backboardRenderer;
 
     public bool hasBeenCollected = false;
 
@@ -24,6 +25,8 @@ public class Idea : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        backboardRenderer.material = new Material(backboardRenderer.material);
+
         curTextMat = new Material(curTextMat);
 
         dp.material = curTextMat;

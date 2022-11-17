@@ -169,6 +169,10 @@ MonoBehaviour:
   maxDist: 20
   centerpoint: {fileID: 0}
   camTransform: {fileID: 0}
+  exploadMulti: 0.2
+  level: {fileID: 2948382907262297707}
+  hasStarted: 0
+  hasDied: 0
 --- !u!1001 &5514329847760739848
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -176,6 +180,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 2948382907262297708}
     m_Modifications:
+    - target: {fileID: 7236184426191308306, guid: 2bff5e6779bc2c34d9c45186982363a3,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7236184426207536581, guid: 2bff5e6779bc2c34d9c45186982363a3,
         type: 3}
       propertyPath: m_Name

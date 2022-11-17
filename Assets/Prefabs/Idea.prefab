@@ -55,6 +55,7 @@ MonoBehaviour:
   highResCam: {fileID: 2460522173022882411}
   medResCam: {fileID: 2460522172616639492}
   lowResCam: {fileID: 2460522173568204905}
+  backboardRenderer: {fileID: 7688303417537736106}
   hasBeenCollected: 0
   curTextMat: {fileID: 2100000, guid: 8710292f60263914d970b104434090e1, type: 2}
 --- !u!1001 &2659039757791386509
@@ -283,6 +284,12 @@ Transform:
 --- !u!4 &6825871316249345763 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1851455057003651879, guid: 2f65c395029f2a54baacc561094ef604,
+    type: 3}
+  m_PrefabInstance: {fileID: 5119446383276613060}
+  m_PrefabAsset: {fileID: 0}
+--- !u!23 &7688303417537736106 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 3294869549079228526, guid: 2f65c395029f2a54baacc561094ef604,
     type: 3}
   m_PrefabInstance: {fileID: 5119446383276613060}
   m_PrefabAsset: {fileID: 0}
