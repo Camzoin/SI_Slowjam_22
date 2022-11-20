@@ -13,10 +13,6 @@ public class Level1 : MonoBehaviour
 
     public List<TMP_FontAsset> fonts;
 
-    public string adj, noun;
-
-    private string[] splitAdj, splitNoun;
-
     public Material backgroundMat, objectMat;
 
     public Material curBackgroundMat, curObjectMat;
@@ -39,6 +35,12 @@ public class Level1 : MonoBehaviour
 
     public PSAnimationTest psAnimator;
 
+    public int spawnedIdeaCount = 0;
+
+    public AudioSource music;
+
+    public float musicVol;
+
     //DO THIS LATER
     private static readonly int SetIcon = Shader.PropertyToID("_SetIcon");
 
@@ -56,9 +58,6 @@ public class Level1 : MonoBehaviour
             psr.material = new Material(psr.material);
         }
 
-        splitAdj = adj.Split(new[] { " " },  System.StringSplitOptions.None);
-
-        splitNoun = noun.Split(new[] { " " }, System.StringSplitOptions.None);
 
         //Sets base position of hue
         float hueAdditionalOffset = Random.Range(0.65f, 1.4f);
@@ -67,73 +66,91 @@ public class Level1 : MonoBehaviour
 
         for (int i = 0; i < ideaCount; i++)
         {
-            var p = Instantiate(ideaPrefab).GetComponent<Idea>();
-
-            curIdeas.Add(p);
-
-            //This is bad but �\_(?)_/� 
-            Quaternion newRotation = Random.rotation;
-
-
-            if (curIdeas.Count > 1)
+            if (gm.splitNoun.Length > 0 && gm.splitAdj.Length > 0)
             {
-                for (int k = 0; k < 100; k++)
-                {
-                    foreach (Idea idea in curIdeas)
-                    {
-                        if(Vector3.Angle(idea.transform.forward, newRotation * Vector3.forward) < 50)
-                        {
-                            if (k > 98)
-                            {
-                                Debug.Log(i + " needed to be reset " + k + " times " + Vector3.Angle(idea.transform.forward, newRotation * Vector3.forward));
-                            }
-                            
+                spawnedIdeaCount += 1;
 
-                            newRotation = Random.rotation;
+                var p = Instantiate(ideaPrefab).GetComponent<Idea>();
+
+                curIdeas.Add(p);
+
+                //This is bad but �\_(?)_/� 
+                Quaternion newRotation = Random.rotation;
+
+
+                if (curIdeas.Count > 1)
+                {
+                    for (int k = 0; k < 100; k++)
+                    {
+                        foreach (Idea idea in curIdeas)
+                        {
+                            if (Vector3.Angle(idea.transform.forward, newRotation * Vector3.forward) < 50)
+                            {
+                                if (k > 98)
+                                {
+                                    Debug.Log(i + " needed to be reset " + k + " times " + Vector3.Angle(idea.transform.forward, newRotation * Vector3.forward));
+                                }
+
+
+                                newRotation = Random.rotation;
+                            }
                         }
                     }
                 }
+
+
+
+
+                p.transform.rotation = newRotation;
+
+                float forwardMulti = Random.Range(1f, 5f);
+
+                p.transform.position += p.transform.forward * forwardMulti;
+
+                p.size = Random.Range(3f, 5f);
+
+                p.curTextMat = new Material(p.curTextMat);
+
+                //Adds offet based on index 3 is magic number but good
+                float hueOffset = (((float)i / ideaCount) / 4f) + hueAdditionalOffset;
+
+                p.curTextMat.SetFloat("_HueOffset", hueOffset);
+
+                p.textField.font = fonts[Random.Range(0, fonts.Count)];
+
+                p.backboard.GetComponent<MeshRenderer>().material = curObjectMat;
+
+                int adjIndex = Random.Range(0, gm.splitAdj.Length);
+
+                int nounIndex = Random.Range(0, gm.splitNoun.Length);
+
+                string sonet = gm.splitAdj[adjIndex] + " " + gm.splitNoun[nounIndex];
+
+                GameManager.RemoveAt(ref gm.splitAdj, adjIndex);
+
+                GameManager.RemoveAt(ref gm.splitNoun, nounIndex);
+
+                p.displayString = sonet;
             }
-
-
-           
-
-            p.transform.rotation = newRotation;
-
-            float forwardMulti = Random.Range(1f, 5f);
-
-            p.transform.position += p.transform.forward * forwardMulti;
-
-            p.size = Random.Range(3f, 5f);
-
-            p.curTextMat = new Material(p.curTextMat);         
-
-            //Adds offet based on index 3 is magic number but good
-            float hueOffset = (((float) i / ideaCount) / 4f) + hueAdditionalOffset;
-
-            p.curTextMat.SetFloat("_HueOffset", hueOffset);
-
-            p.textField.font = fonts[Random.Range(0, fonts.Count)];
-
-            p.backboard.GetComponent<MeshRenderer>().material = curObjectMat;
-
-            string sonet = splitAdj[Random.Range(0, splitAdj.Length)] + " " + splitNoun[Random.Range(0, splitNoun.Length)];
-
-            p.displayString = sonet;
         }
     }
 
     // Update is called once per frame
     void Update()
     {
+        music.volume = musicVol;
+
         if (gm.curIdeaToDestroy != null)
         {
             for (int i = 0; i < ideaCount; i++)
             {
-                if(curIdeas[i] != gm.curIdeaToDestroy)
+                if (i < curIdeas.Count)
                 {
-                    curIdeas[i].dp.material.SetFloat("_AlphaMulti", 0);
-                }          
+                    if (curIdeas[i] != gm.curIdeaToDestroy)
+                    {
+                        curIdeas[i].dp.material.SetFloat("_AlphaMulti", 0);
+                    }
+                }  
             }
         }
     }
@@ -235,6 +252,57 @@ public class Level1 : MonoBehaviour
             i.backboard.localScale = new Vector3(i.size / 5, i.size / 5, i.size / 5);
         }
 
+
+        yield return null;
+    }
+
+
+    public void FadeMusicInFunc()
+    {
+        StartCoroutine(FadeMusicIn());
+    }
+
+    public void FadeMusicOutFunc()
+    {
+        StartCoroutine(FadeMusicOut());
+    }
+
+    IEnumerator FadeMusicIn()
+    {
+        float elapsedTime = 0f;
+        float fadeTime = 1f;
+
+        while (elapsedTime < fadeTime)
+        {
+            musicVol = elapsedTime / fadeTime;
+
+            elapsedTime += Time.deltaTime;
+
+            yield return null;
+        }
+
+        musicVol = 1;
+
+        yield return null;
+    }
+
+    IEnumerator FadeMusicOut()
+    {
+        float elapsedTime = 0f;
+        float fadeTime = 1f;
+
+        while (elapsedTime < fadeTime)
+        {
+            musicVol = 1 - elapsedTime / fadeTime;
+
+            elapsedTime += Time.deltaTime;
+
+            yield return null;
+        }
+
+        music.enabled = false;
+
+        musicVol = 0;
 
         yield return null;
     }

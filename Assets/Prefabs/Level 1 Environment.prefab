@@ -221,8 +221,8 @@ ParticleSystem:
         m_RotationOrder: 4
     startColor:
       serializedVersion: 2
-      minMaxState: 0
-      minColor: {r: 1, g: 1, b: 1, a: 1}
+      minMaxState: 2
+      minColor: {r: 0, g: 0, b: 0, a: 1}
       maxColor: {r: 1, g: 1, b: 1, a: 1}
       maxGradient:
         serializedVersion: 2
@@ -601,7 +601,7 @@ ParticleSystem:
         m_PostInfinity: 2
         m_RotationOrder: 4
     randomizeRotationDirection: 0
-    maxNumParticles: 50
+    maxNumParticles: 75
     customEmitterVelocity: {x: 0, y: 0, z: 0}
     size3D: 1
     rotation3D: 0
@@ -1193,12 +1193,12 @@ ParticleSystem:
         m_RotationOrder: 4
     separateAxes: 0
   RotationModule:
-    enabled: 0
+    enabled: 1
     x:
       serializedVersion: 2
-      minMaxState: 0
-      scalar: 0
-      minScalar: 0
+      minMaxState: 3
+      scalar: 0.7853981
+      minScalar: -0.7853981
       maxCurve:
         serializedVersion: 2
         m_Curve:
@@ -1249,9 +1249,9 @@ ParticleSystem:
         m_RotationOrder: 4
     y:
       serializedVersion: 2
-      minMaxState: 0
-      scalar: 0
-      minScalar: 0
+      minMaxState: 3
+      scalar: 0.7853981
+      minScalar: -0.7853981
       maxCurve:
         serializedVersion: 2
         m_Curve:
@@ -1302,9 +1302,9 @@ ParticleSystem:
         m_RotationOrder: 4
     curve:
       serializedVersion: 2
-      minMaxState: 0
+      minMaxState: 3
       scalar: 0.7853982
-      minScalar: 0.7853982
+      minScalar: -0.7853981
       maxCurve:
         serializedVersion: 2
         m_Curve:
@@ -1353,7 +1353,7 @@ ParticleSystem:
         m_PreInfinity: 2
         m_PostInfinity: 2
         m_RotationOrder: 4
-    separateAxes: 0
+    separateAxes: 1
   ColorModule:
     enabled: 0
     gradient:
@@ -1707,8 +1707,8 @@ ParticleSystem:
     orbitalX:
       serializedVersion: 2
       minMaxState: 3
-      scalar: -0.01
-      minScalar: 0.01
+      scalar: -0.025
+      minScalar: 0.025
       maxCurve:
         serializedVersion: 2
         m_Curve:
@@ -1760,8 +1760,8 @@ ParticleSystem:
     orbitalY:
       serializedVersion: 2
       minMaxState: 3
-      scalar: -0.01
-      minScalar: 0.01
+      scalar: -0.025
+      minScalar: 0.025
       maxCurve:
         serializedVersion: 2
         m_Curve:
@@ -1813,8 +1813,8 @@ ParticleSystem:
     orbitalZ:
       serializedVersion: 2
       minMaxState: 3
-      scalar: -0.01
-      minScalar: 0.01
+      scalar: -0.025
+      minScalar: 0.025
       maxCurve:
         serializedVersion: 2
         m_Curve:
@@ -4888,7 +4888,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &7236184426191308310
 Transform:
   m_ObjectHideFlags: 0
@@ -5026,7 +5026,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7236184426248072178}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: -0.27, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -5223,8 +5223,8 @@ ParticleSystem:
         m_RotationOrder: 4
     startColor:
       serializedVersion: 2
-      minMaxState: 0
-      minColor: {r: 1, g: 1, b: 1, a: 1}
+      minMaxState: 2
+      minColor: {r: 0, g: 0, b: 0, a: 1}
       maxColor: {r: 1, g: 1, b: 1, a: 1}
       maxGradient:
         serializedVersion: 2
@@ -6195,12 +6195,12 @@ ParticleSystem:
         m_RotationOrder: 4
     separateAxes: 0
   RotationModule:
-    enabled: 0
+    enabled: 1
     x:
       serializedVersion: 2
-      minMaxState: 0
-      scalar: 0
-      minScalar: 0
+      minMaxState: 3
+      scalar: 0.08726646
+      minScalar: -0.08726646
       maxCurve:
         serializedVersion: 2
         m_Curve:
@@ -6251,9 +6251,9 @@ ParticleSystem:
         m_RotationOrder: 4
     y:
       serializedVersion: 2
-      minMaxState: 0
-      scalar: 0
-      minScalar: 0
+      minMaxState: 3
+      scalar: 0.08726646
+      minScalar: -0.08726646
       maxCurve:
         serializedVersion: 2
         m_Curve:
@@ -6304,9 +6304,9 @@ ParticleSystem:
         m_RotationOrder: 4
     curve:
       serializedVersion: 2
-      minMaxState: 0
-      scalar: 0.7853982
-      minScalar: 0.7853982
+      minMaxState: 3
+      scalar: 0.08726646
+      minScalar: -0.08726646
       maxCurve:
         serializedVersion: 2
         m_Curve:
@@ -6355,7 +6355,7 @@ ParticleSystem:
         m_PreInfinity: 2
         m_PostInfinity: 2
         m_RotationOrder: 4
-    separateAxes: 0
+    separateAxes: 1
   ColorModule:
     enabled: 0
     gradient:
@@ -6709,8 +6709,8 @@ ParticleSystem:
     orbitalX:
       serializedVersion: 2
       minMaxState: 3
-      scalar: -0.005
-      minScalar: 0.005
+      scalar: -0.025
+      minScalar: 0.025
       maxCurve:
         serializedVersion: 2
         m_Curve:
@@ -6762,8 +6762,8 @@ ParticleSystem:
     orbitalY:
       serializedVersion: 2
       minMaxState: 3
-      scalar: -0.005
-      minScalar: 0.005
+      scalar: -0.025
+      minScalar: 0.025
       maxCurve:
         serializedVersion: 2
         m_Curve:
@@ -6815,8 +6815,8 @@ ParticleSystem:
     orbitalZ:
       serializedVersion: 2
       minMaxState: 3
-      scalar: -0.005
-      minScalar: 0.005
+      scalar: -0.025
+      minScalar: 0.025
       maxCurve:
         serializedVersion: 2
         m_Curve:
@@ -10093,8 +10093,8 @@ ParticleSystem:
         m_RotationOrder: 4
     startColor:
       serializedVersion: 2
-      minMaxState: 0
-      minColor: {r: 1, g: 1, b: 1, a: 1}
+      minMaxState: 2
+      minColor: {r: 0, g: 0, b: 0, a: 1}
       maxColor: {r: 1, g: 1, b: 1, a: 1}
       maxGradient:
         serializedVersion: 2
@@ -10210,8 +10210,8 @@ ParticleSystem:
     startSizeY:
       serializedVersion: 2
       minMaxState: 3
-      scalar: 0.8
-      minScalar: 0.5
+      scalar: 0.5
+      minScalar: 0.4
       maxCurve:
         serializedVersion: 2
         m_Curve:
@@ -10473,7 +10473,7 @@ ParticleSystem:
         m_PostInfinity: 2
         m_RotationOrder: 4
     randomizeRotationDirection: 0
-    maxNumParticles: 200
+    maxNumParticles: 300
     customEmitterVelocity: {x: 0, y: 0, z: 0}
     size3D: 1
     rotation3D: 0
@@ -11065,12 +11065,12 @@ ParticleSystem:
         m_RotationOrder: 4
     separateAxes: 0
   RotationModule:
-    enabled: 0
+    enabled: 1
     x:
       serializedVersion: 2
-      minMaxState: 0
-      scalar: 0
-      minScalar: 0
+      minMaxState: 3
+      scalar: 0.7853981
+      minScalar: -0.7853981
       maxCurve:
         serializedVersion: 2
         m_Curve:
@@ -11121,9 +11121,9 @@ ParticleSystem:
         m_RotationOrder: 4
     y:
       serializedVersion: 2
-      minMaxState: 0
-      scalar: 0
-      minScalar: 0
+      minMaxState: 3
+      scalar: 0.7853981
+      minScalar: -0.7853981
       maxCurve:
         serializedVersion: 2
         m_Curve:
@@ -11174,9 +11174,9 @@ ParticleSystem:
         m_RotationOrder: 4
     curve:
       serializedVersion: 2
-      minMaxState: 0
+      minMaxState: 3
       scalar: 0.7853982
-      minScalar: 0.7853982
+      minScalar: -0.7853981
       maxCurve:
         serializedVersion: 2
         m_Curve:
@@ -11225,7 +11225,7 @@ ParticleSystem:
         m_PreInfinity: 2
         m_PostInfinity: 2
         m_RotationOrder: 4
-    separateAxes: 0
+    separateAxes: 1
   ColorModule:
     enabled: 0
     gradient:
@@ -11579,8 +11579,8 @@ ParticleSystem:
     orbitalX:
       serializedVersion: 2
       minMaxState: 3
-      scalar: -0.01
-      minScalar: 0.01
+      scalar: -0.05
+      minScalar: 0.05
       maxCurve:
         serializedVersion: 2
         m_Curve:
@@ -11632,8 +11632,8 @@ ParticleSystem:
     orbitalY:
       serializedVersion: 2
       minMaxState: 3
-      scalar: -0.01
-      minScalar: 0.01
+      scalar: -0.05
+      minScalar: 0.05
       maxCurve:
         serializedVersion: 2
         m_Curve:
@@ -11685,8 +11685,8 @@ ParticleSystem:
     orbitalZ:
       serializedVersion: 2
       minMaxState: 3
-      scalar: -0.01
-      minScalar: 0.01
+      scalar: -0.05
+      minScalar: 0.05
       maxCurve:
         serializedVersion: 2
         m_Curve:

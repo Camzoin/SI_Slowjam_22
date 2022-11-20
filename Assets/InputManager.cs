@@ -20,6 +20,10 @@ public class InputManager : MonoBehaviour
 
     public Animator ideaTab;
 
+    public bool tutorialComplete = false;
+
+    private bool lmbDone = false, rmbDone = false, spaceDone = false;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -51,12 +55,22 @@ public class InputManager : MonoBehaviour
             {
                 gm.planarVelocity += mouseDelta * gm.planarScalar;
                 gm.inputActivity += mouseDelta.magnitude * gm.activityStrength;
+
+                if (lmbDone == false)
+                {
+                    lmbDone = true;
+                }
             }
 
             if (Input.GetMouseButton(1))
             {
                 gm.rollVelocity += mouseDelta.x * gm.rollScalar;
                 gm.inputActivity += mouseDelta.x * gm.activityStrength;
+
+                if (rmbDone == false)
+                {
+                    rmbDone = true;
+                }
             }
 
             // apply drag to the input activity "velocity"
@@ -86,6 +100,10 @@ public class InputManager : MonoBehaviour
                     zoomLerp = 1;
                 }
 
+                if (spaceDone == false)
+                {
+                    spaceDone = true;
+                }
             }
             else if (zoomLerp > 0)
             {
@@ -108,6 +126,10 @@ public class InputManager : MonoBehaviour
             //    rb.AddRelativeTorque(new Vector3(0, 0, -100 * Time.deltaTime));
             //}
 
+            if (lmbDone == true && rmbDone == true && spaceDone == true && tutorialComplete == false)
+            {
+                tutorialComplete = true;
+            }
 
             mainCam.orthographicSize = Mathf.Lerp(camZoomMinMax.y, camZoomMinMax.x, zoomLerp);
         }

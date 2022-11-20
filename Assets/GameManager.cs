@@ -4,6 +4,7 @@ using UnityEngine;
 using TMPro;
 using static UnityEngine.Mathf;
 using UnityEngine.UI;
+using System;
 
 public class GameManager : MonoBehaviour
 {
@@ -44,6 +45,32 @@ public class GameManager : MonoBehaviour
     public Image timerFillImage;
 
     public MeshRenderer backgroundRenderer;
+
+    public string adj, noun;
+
+    public string[] splitAdj, splitNoun;
+
+    public GameObject coreExplosion;
+
+    public GameObject uiGameObject;
+
+    public Image wordsFoundThisCloudBar, wordsFoundTotalBar;
+
+    public AudioSource clickToStart, congrats;
+
+    private int highestPossibleWordCount;
+
+    private float clickToStartTimer = 5f, curClickToStartTime = 0;
+
+    public Animator tutAnimator;
+
+    public AudioSource noteCollectionSoundSource, noteCollectionSoundSource2;
+
+    private float collectionAudioLoopVol = 0;
+
+    public bool collectionAudioLoopVolGoingDown = true;
+
+    public List<AudioClip> songs;
 
     [Header("Movement Settings")]
     [Tooltip("Constant drag applied to latteral movement")]
@@ -95,26 +122,77 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        splitAdj = adj.Split(new[] { " " }, System.StringSplitOptions.None);
+
+        splitNoun = noun.Split(new[] { " " }, System.StringSplitOptions.None);
+
+        if (splitAdj.Length > splitNoun.Length)
+        {
+            highestPossibleWordCount = splitNoun.Length;
+        }
+        {
+            highestPossibleWordCount = splitAdj.Length;
+        }
+
         backgroundRenderer.material = new Material(backgroundRenderer.material);
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(ideaMenuIdea.transform.childCount > 8)
+        if (ideaMenuIdea.transform.childCount > 8)
         {
             //Do the first option
         }
+
+        if (curLevel == null)
+        {
+            curClickToStartTime += Time.deltaTime;
+        }
+
+        if (curClickToStartTime > clickToStartTimer)
+        {
+            clickToStart.Play();
+
+            curClickToStartTime = 0;
+        }
+
+        if (inputManager.tutorialComplete == true)
+        {
+            tutAnimator.SetTrigger("CloseTutorial");
+        }
+
+
+
 
         if (curLevel != null)
         {
             //PP + smooth stuff
 
+            if (collectionAudioLoopVolGoingDown == true && collectionAudioLoopVol >= 0)
+            {
+                collectionAudioLoopVol = collectionAudioLoopVol - (Time.deltaTime / 2);
+
+                curLevel.musicVol = Clamp01(curLevel.musicVol + (Time.deltaTime / 2));
+            }
+            else
+            {
+                curLevel.musicVol = Clamp01(curLevel.musicVol + (Time.deltaTime / 2));
+            }
+
+            noteCollectionSoundSource.volume = collectionAudioLoopVol;
+
+
+            if (inputManager.tutorialComplete == false && curLevel.isSpawning == false)
+            {
+                tutAnimator.SetTrigger("OpenTutorial");
+            }
+
             if (curLevel.psAnimator.hasStarted == false && curLevel.psAnimator.hasDied == false && curLevel.isSpawning == false)
             {
                 curtimeToCollectCurLevel += Time.deltaTime;
             }
-            
+
             float percentTimeRemaining = 1 - (curtimeToCollectCurLevel / timeToCollectCurLevel);
 
             if (curLevel.psAnimator.hasDied == true)
@@ -124,7 +202,7 @@ public class GameManager : MonoBehaviour
                 percentTimeRemaining = 0;
             }
 
-            if (percentTimeRemaining < 0.3f && percentTimeRemaining >= 0.2f)
+            if (percentTimeRemaining < 0.1f && percentTimeRemaining >= 0.05f)
             {
                 backgroundRenderer.material.SetFloat("_ColorLerp", Clamp01(backgroundRenderer.material.GetFloat("_ColorLerp") + (Time.deltaTime * 2)));
 
@@ -133,7 +211,7 @@ public class GameManager : MonoBehaviour
                     psr.material.SetFloat("_ColorLerp", backgroundRenderer.material.GetFloat("_ColorLerp"));
                 }
 
-                foreach(Idea ide in curLevel.curIdeas)
+                foreach (Idea ide in curLevel.curIdeas)
                 {
                     if (ide.backboardRenderer != null)
                     {
@@ -141,9 +219,9 @@ public class GameManager : MonoBehaviour
                     }
                 }
             }
-            if ((percentTimeRemaining < 0.2f && percentTimeRemaining >= 0) || percentTimeRemaining < 0)
+            if ((percentTimeRemaining < 0.05f && percentTimeRemaining >= 0) || percentTimeRemaining < 0)
             {
-                float adjPercentTimeRemaining = 1 - (percentTimeRemaining * 5);
+                float adjPercentTimeRemaining = 1 - (percentTimeRemaining * 20);
 
                 ppAnimator.SetLayerWeight(0, Lerp(1, 0, adjPercentTimeRemaining));
 
@@ -157,10 +235,10 @@ public class GameManager : MonoBehaviour
 
                     psr.material.SetColor("_Color_2", Color.Lerp(psr.material.GetColor("_Color_2"), new Color(0.2641509f, 0.2641509f, 0.2641509f, 1), adjPercentTimeRemaining));
                 }
-                
+
                 foreach (Idea ide in curLevel.curIdeas)
                 {
-                    if(ide.backboardRenderer != null)
+                    if (ide.backboardRenderer != null)
                     {
                         ide.backboardRenderer.material.SetFloat("_ColorLerp", backgroundRenderer.material.GetFloat("_ColorLerp"));
 
@@ -190,50 +268,63 @@ public class GameManager : MonoBehaviour
             {
                 //DIE
 
-                foreach(Idea yu in curLevel.curIdeas)
+                foreach (Idea yu in curLevel.curIdeas)
                 {
-                    yu.ShrinkMe();
+                    if (yu != null)
+                    {
+                        yu.ShrinkMe();
+                    }
                 }
+
+                curLevel.FadeMusicOutFunc();
 
                 curtimeToCollectCurLevel = 0;
 
                 curLevel.psAnimator.Explode();
 
+                splitAdj = adj.Split(new[] { " " }, System.StringSplitOptions.None);
+
+                splitNoun = noun.Split(new[] { " " }, System.StringSplitOptions.None);
+
+                SetWordsFoundToFull(wordsFoundThisCloudBar);
+
+                SetWordsFoundToFull(wordsFoundTotalBar);
+
                 StartCoroutine(WaitToSpawnNextlevel());
             }
-            
 
-                foreach (Idea i in curLevel.curIdeas)
+
+            foreach (Idea i in curLevel.curIdeas)
+            {
+                if (i != null)
                 {
-                    if (i != null)
+                    if (closestIdea)
                     {
-                        if(closestIdea)
-                        {
-                            //FIND THE CLOSEST IDEA
-                            if (Vector3.Angle(i.transform.rotation.eulerAngles, camCenterTransform.rotation.eulerAngles) < Vector3.Angle(closestIdea.transform.rotation.eulerAngles, camCenterTransform.rotation.eulerAngles))
-                            {
-                                closestIdea = i;
-                            }
-                        }
-                        else
+                        //FIND THE CLOSEST IDEA
+                        if (Vector3.Angle(i.transform.rotation.eulerAngles, camCenterTransform.rotation.eulerAngles) < Vector3.Angle(closestIdea.transform.rotation.eulerAngles, camCenterTransform.rotation.eulerAngles))
                         {
                             closestIdea = i;
                         }
-
-
-
-                        float dot = (Vector3.Dot(i.transform.forward, camCenterTransform.forward) + 1) / 2;
-
-                        i.curTextMat.SetFloat("_TextLegibility", Lerp(0, 1, Clamp01(dot - textBlurAngle)));
-
-                        if (curIdeaToDestroy == null)
-                        {
-                            i.curTextMat.SetFloat("_AlphaMulti", Lerp(0, 1, Clamp01(dot - textDisapearAngle)));
-                        }
-
-
                     }
+                    else
+                    {
+                        closestIdea = i;
+                    }
+
+
+
+                    float dot = (Vector3.Dot(i.transform.forward, camCenterTransform.forward) + 1) / 2;
+
+                    i.curTextMat.SetFloat("_TextLegibility", Lerp(0, 1, Clamp01(dot - textBlurAngle)));
+
+                    if (curIdeaToDestroy == null)
+                    {
+                        i.curTextMat.SetFloat("_AlphaMulti", Lerp(0, 1, Clamp01(dot - textDisapearAngle)));
+                    }
+
+
                 }
+            }
 
             if (curLevel.curIdeas.Count > 0)
             {
@@ -246,8 +337,10 @@ public class GameManager : MonoBehaviour
 
 
 
-                
+
         }
+
+        
 
         if (closestIdea != null)
         {
@@ -342,6 +435,18 @@ public class GameManager : MonoBehaviour
 
                 rollVelocity = 0f;
 
+                noteCollectionSoundSource.volume = 1;
+
+                noteCollectionSoundSource.pitch = UnityEngine.Random.Range(0.4f, 1.5f);
+
+                collectionAudioLoopVol = 1;
+
+                curLevel.musicVol = 0;
+
+                collectionAudioLoopVolGoingDown = false;
+
+                noteCollectionSoundSource2.Play();
+
                 collectedIdeas.Add(closestIdea);
 
                 var spawnedIdea = Instantiate(ideaMenuIdea, ideaMenuTransform);
@@ -371,32 +476,62 @@ public class GameManager : MonoBehaviour
         }
     }
 
-   
+
     public void GoToNextLevel()
     {
-        if (curLevel != null)
+        noteCollectionSoundSource.Stop();
+        noteCollectionSoundSource.Play();
+
+        
+
+        
+
+        //If I just won the game
+        if (splitNoun.Length == 0 || splitAdj.Length == 0)
         {
             curtimeToCollectCurLevel = 0;
 
-            //Destroy(curLevel.gameObject);
+            curLevel.psAnimator.Won();
 
-            curLevel.psAnimator.Crumble();
+            Instantiate(coreExplosion, Vector3.zero, Quaternion.identity);
 
-            StartCoroutine(WaitToSpawnNextlevel());
+            splitAdj = adj.Split(new[] { " " }, System.StringSplitOptions.None);
+
+            splitNoun = noun.Split(new[] { " " }, System.StringSplitOptions.None);
+
+            StartCoroutine(WonTheGame());
         }
+        //If I did not just win the game
         else
         {
-            var p = Instantiate(levelToSpawn);
+            if (curLevel != null)
+            {
+                curtimeToCollectCurLevel = 0;
 
-            curtimeToCollectCurLevel = 0;
+                curLevel.psAnimator.Crumble();
 
-            curLevel = p;
+                StartCoroutine(WaitToSpawnNextlevel());
+            }
+            else
+            {
+                var p = Instantiate(levelToSpawn);
 
-            p.gm = this;
+                curtimeToCollectCurLevel = 0;
 
-            p.psAnimator.camTransform = Camera.main.transform;
+                curLevel = p;
 
-            p.psAnimator.centerpoint = camCenterTransform;
+                p.music.PlayOneShot(songs[UnityEngine.Random.Range(0, songs.Count)]);
+
+                p.FadeMusicInFunc();
+
+                p.gm = this;
+
+                p.psAnimator.camTransform = Camera.main.transform;
+
+                p.psAnimator.centerpoint = camCenterTransform;
+
+                SetImageFills();
+            }
         }
     }
 
@@ -412,6 +547,8 @@ public class GameManager : MonoBehaviour
             yield return null;
         }
 
+        SetImageFills();
+
         Destroy(curLevel.gameObject);
 
         var p = Instantiate(levelToSpawn);
@@ -420,11 +557,98 @@ public class GameManager : MonoBehaviour
 
         curLevel = p;
 
+        p.music.PlayOneShot(songs[UnityEngine.Random.Range(0, songs.Count)]);
+
+        p.FadeMusicInFunc();
+
         p.gm = this;
 
         p.psAnimator.camTransform = Camera.main.transform;
 
         p.psAnimator.centerpoint = camCenterTransform;
+
+        SetWordsFoundToFull(wordsFoundThisCloudBar);
+
+        yield return null;
+    }
+
+    public static void RemoveAt<T>(ref T[] arr, int index)
+    {
+        for (int a = index; a < arr.Length - 1; a++)
+        {
+            // moving elements downwards, to fill the gap at [index]
+            arr[a] = arr[a + 1];
+        }
+        // finally, let's decrement Array's size by one
+        Array.Resize(ref arr, arr.Length - 1);
+    }
+
+    public void SetImageFills()
+    {
+        wordsFoundThisCloudBar.fillAmount = 1 - (curLevel.curFoundIdeas / (float)curLevel.ideaCount);
+
+
+        if (splitAdj.Length > splitNoun.Length)
+        {
+            wordsFoundTotalBar.fillAmount = (splitNoun.Length + curLevel.ideaCount - curLevel.curFoundIdeas) / (float)highestPossibleWordCount;
+        }
+        else
+        {
+            wordsFoundTotalBar.fillAmount = (splitAdj.Length + curLevel.ideaCount - curLevel.curFoundIdeas) / (float)highestPossibleWordCount;
+        }
+
+
+    }
+
+    public void SetWordsFoundToFull(Image bar)
+    {
+        StartCoroutine(RefillBar(bar));
+    }
+
+    public IEnumerator RefillBar(Image bar)
+    {
+        float elapsedTime = 0f;
+        float waitTime = 3.5f;
+
+        while (elapsedTime < waitTime)
+        {
+            if (elapsedTime / waitTime > bar.fillAmount)
+            {
+                bar.fillAmount = elapsedTime / waitTime;
+            }
+
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+
+        bar.fillAmount = 1;
+    }
+
+    public IEnumerator WonTheGame()
+    {
+        float elapsedTime = 0f;
+        float waitTime = 3f;
+
+        while (elapsedTime < waitTime)
+        {
+
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+
+        wordsFoundThisCloudBar.fillAmount = 1;
+
+        wordsFoundTotalBar.fillAmount = 1;
+
+        timerFillImage.fillAmount = 1;
+
+        Destroy(curLevel.gameObject);
+
+        curClickToStartTime = 0;
+
+        curtimeToCollectCurLevel = 0f;
+
+        congrats.Play();
 
         yield return null;
     }

@@ -5,10 +5,12 @@ using UnityEngine;
 public class textKiller : StateMachineBehaviour
 {
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
-    //override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
-    //{
-    //    
-    //}
+    override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
+    {
+        GameManager gm = GameObject.FindObjectOfType<GameManager>();
+
+        gm.uiGameObject.SetActive(false);
+    }
 
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
     //override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
@@ -29,10 +31,18 @@ public class textKiller : StateMachineBehaviour
 
         gm.inputManager.playerCanAct = true;
 
-        if (gm.curLevel.curFoundIdeas >= gm.curLevel.ideaCount)
-        {
+        if (gm.curLevel.curFoundIdeas >= gm.curLevel.spawnedIdeaCount)
+        {         
             gm.GoToNextLevel();
+
+            gm.curLevel.FadeMusicOutFunc();
         }
+
+        gm.collectionAudioLoopVolGoingDown = true;
+
+        gm.SetImageFills();
+
+        gm.uiGameObject.SetActive(true);
     }
 
     // OnStateMove is called right after Animator.OnAnimatorMove()
