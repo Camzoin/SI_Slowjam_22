@@ -41,12 +41,16 @@ public class Level1 : MonoBehaviour
 
     public float musicVol;
 
+    public AudioSource laserSound;
+
     //DO THIS LATER
     private static readonly int SetIcon = Shader.PropertyToID("_SetIcon");
 
     // Start is called before the first frame update
     void Start()
     {
+        laserSound.pitch = Random.Range(0.75f, 1.25f);
+
         curBackgroundMat = new Material(backgroundMat);
 
         curObjectMat = new Material(objectMat);
@@ -188,6 +192,8 @@ public class Level1 : MonoBehaviour
             i.dp.enabled = true;
         }
 
+        laserSound.Play();
+
         StartCoroutine(SpawnTextAnim());
     }
 
@@ -259,7 +265,7 @@ public class Level1 : MonoBehaviour
 
     public void FadeMusicInFunc()
     {
-        StartCoroutine(FadeMusicIn());
+        StartCoroutine(FadeMusicInHelper());
     }
 
     public void FadeMusicOutFunc()
@@ -282,6 +288,23 @@ public class Level1 : MonoBehaviour
         }
 
         musicVol = 1;
+
+        yield return null;
+    }
+
+    IEnumerator FadeMusicInHelper()
+    {
+        float elapsedTime = 0f;
+        float fadeTime = 5f;
+
+        while (elapsedTime < fadeTime)
+        {
+            elapsedTime += Time.deltaTime;
+
+            yield return null;
+        }
+
+        StartCoroutine(FadeMusicIn());
 
         yield return null;
     }

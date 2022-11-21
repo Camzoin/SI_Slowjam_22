@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.Audio;
 
 public class InputManager : MonoBehaviour
 {
@@ -24,6 +26,14 @@ public class InputManager : MonoBehaviour
 
     private bool lmbDone = false, rmbDone = false, spaceDone = false;
 
+    public GameObject pauseMenu;
+
+    public bool isPaused = false;
+
+    public Slider soundSlider;
+
+    public AudioMixer AL, musicMixer;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -33,7 +43,11 @@ public class InputManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(playerCanAct == true && ideaTab.GetCurrentAnimatorStateInfo(0).IsName("Closed") == true)
+        AL.SetFloat("Vol", Mathf.Log10(soundSlider.value) * 20f);
+
+        musicMixer.SetFloat("Vol", Mathf.Log10(soundSlider.value) * 20f);
+
+        if (playerCanAct == true && ideaTab.GetCurrentAnimatorStateInfo(0).IsName("Closed") == true && isPaused == false)
         {
             if (Input.GetMouseButtonDown(0))
             {
@@ -115,6 +129,8 @@ public class InputManager : MonoBehaviour
                 }
             }
 
+           
+
 
             //if (Input.GetButton("RotateLeft"))
             //{
@@ -134,7 +150,14 @@ public class InputManager : MonoBehaviour
             mainCam.orthographicSize = Mathf.Lerp(camZoomMinMax.y, camZoomMinMax.x, zoomLerp);
         }
 
-        if(0.7f > Input.mousePosition.x / Screen.width)
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            pauseMenu.SetActive(!pauseMenu.activeSelf);
+
+            isPaused = !isPaused;
+        }
+
+        if (0.7f > Input.mousePosition.x / Screen.width)
         {
             CloseIdeasMenu();
         }

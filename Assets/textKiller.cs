@@ -31,6 +31,17 @@ public class textKiller : StateMachineBehaviour
 
         gm.inputManager.playerCanAct = true;
 
+        if (gm.curLevel != null)
+        {
+            int randy = Random.Range(0, gm.curLevel.fonts.Count);
+
+            gm.firstFrac.font = gm.curLevel.fonts[randy];
+
+            gm.secondFrac.font = gm.curLevel.fonts[randy];
+
+            gm.thirdFrac.font = gm.curLevel.fonts[randy];
+        }
+
         if (gm.curLevel.curFoundIdeas >= gm.curLevel.spawnedIdeaCount)
         {         
             gm.GoToNextLevel();

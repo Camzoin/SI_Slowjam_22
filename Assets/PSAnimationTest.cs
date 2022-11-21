@@ -67,7 +67,7 @@ public class PSAnimationTest : MonoBehaviour
                         float dist;
 
                         //Use my trasform
-                        dist = Vector3.Distance(particles[i].position, centerpoint.position - new Vector3(centerpoint.up.normalized.x * 10, centerpoint.up.normalized.y * 10, centerpoint.up.normalized.z * 10));
+                        dist = Vector3.Distance(particles[i].position, centerpoint.position - new Vector3(-centerpoint.up.normalized.x * 10, -centerpoint.up.normalized.y * 10, -centerpoint.up.normalized.z * 10));
 
                         float goodDist = 1 - dist;
 
@@ -108,7 +108,7 @@ public class PSAnimationTest : MonoBehaviour
 
                             //(8.1f * Time.fixedDeltaTime)
 
-                            vel = vel - centerpoint.up.normalized;
+                            vel = vel + centerpoint.up.normalized;
 
                             particles[i].velocity = vel;
 
@@ -125,7 +125,7 @@ public class PSAnimationTest : MonoBehaviour
 
                             //(8.1f * Time.fixedDeltaTime)
 
-                            vel = vel - centerpoint.up.normalized;
+                            vel = vel + centerpoint.up.normalized;
 
                             particles[i].velocity = vel;
 
@@ -143,7 +143,7 @@ public class PSAnimationTest : MonoBehaviour
 
                             //(8.1f * Time.fixedDeltaTime)
 
-                            vel = vel - centerpoint.up.normalized;
+                            vel = vel + centerpoint.up.normalized;
 
                             particles[i].velocity = vel;
 

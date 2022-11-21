@@ -72,6 +72,12 @@ public class GameManager : MonoBehaviour
 
     public List<AudioClip> songs;
 
+    public List<AudioClip> songsToUse;
+
+    public Animator gameEndAnimator;
+
+    public TextMeshProUGUI firstFrac, secondFrac, thirdFrac;
+
     [Header("Movement Settings")]
     [Tooltip("Constant drag applied to latteral movement")]
     public float planarDrag = 5f;
@@ -122,6 +128,8 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        ResetSongList();
+
         splitAdj = adj.Split(new[] { " " }, System.StringSplitOptions.None);
 
         splitNoun = noun.Split(new[] { " " }, System.StringSplitOptions.None);
@@ -140,6 +148,40 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (curLevel != null)
+        {
+            firstFrac.text = 120 - (int)curtimeToCollectCurLevel + "/" + timeToCollectCurLevel;
+
+            secondFrac.text = 7 - curLevel.curFoundIdeas + "/" + curLevel.spawnedIdeaCount;
+
+            if (splitAdj.Length > splitNoun.Length)
+            {
+                thirdFrac.text = (splitNoun.Length + curLevel.ideaCount - curLevel.curFoundIdeas) + "/" + (float)highestPossibleWordCount;
+            }
+            else
+            {
+                thirdFrac.text = (splitAdj.Length + curLevel.ideaCount - curLevel.curFoundIdeas) + "/" + (float)highestPossibleWordCount;
+            }
+        }
+        else
+        {
+            firstFrac.text = timeToCollectCurLevel + "/" + timeToCollectCurLevel;
+
+            secondFrac.text = 7 + "/" + 7;
+
+            if (splitAdj.Length > splitNoun.Length)
+            {
+                thirdFrac.text = splitNoun.Length + "/" + (float)highestPossibleWordCount;
+            }
+            else
+            {
+                thirdFrac.text = splitAdj.Length + "/" + (float)highestPossibleWordCount;
+            }
+        }
+
+
+
+
         if (ideaMenuIdea.transform.childCount > 8)
         {
             //Do the first option
@@ -175,7 +217,7 @@ public class GameManager : MonoBehaviour
 
                 curLevel.musicVol = Clamp01(curLevel.musicVol + (Time.deltaTime / 2));
             }
-            else
+            else if (curLevel.isSpawning == false)
             {
                 curLevel.musicVol = Clamp01(curLevel.musicVol + (Time.deltaTime / 2));
             }
@@ -520,7 +562,16 @@ public class GameManager : MonoBehaviour
 
                 curLevel = p;
 
-                p.music.PlayOneShot(songs[UnityEngine.Random.Range(0, songs.Count)]);
+                if (songsToUse.Count == 0)
+                {
+                    ResetSongList();
+                }
+
+                int randy = UnityEngine.Random.Range(0, songsToUse.Count);              
+
+                p.music.PlayOneShot(songsToUse[randy]);
+
+                songsToUse.Remove(songsToUse[randy]);
 
                 p.FadeMusicInFunc();
 
@@ -557,7 +608,16 @@ public class GameManager : MonoBehaviour
 
         curLevel = p;
 
-        p.music.PlayOneShot(songs[UnityEngine.Random.Range(0, songs.Count)]);
+        if (songsToUse.Count == 0)
+        {
+            ResetSongList();
+        }
+
+        int randy = UnityEngine.Random.Range(0, songsToUse.Count);      
+
+        p.music.PlayOneShot(songsToUse[randy]);
+
+        songsToUse.Remove(songsToUse[randy]);
 
         p.FadeMusicInFunc();
 
@@ -651,5 +711,15 @@ public class GameManager : MonoBehaviour
         congrats.Play();
 
         yield return null;
+    }
+
+    public void ResetSongList()
+    {
+        songsToUse = new List<AudioClip>(songs);
+    }
+
+    public void CloseGame()
+    {
+        gameEndAnimator.SetTrigger("Play");
     }
 }
